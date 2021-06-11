@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Android Daily',
+      title: 'Flutter Daily',
       home: Nav(),
     );
   }
 }
 
-/// Widget for Main application instantiates.
+/// Create Stateful Widget Nav For Bottom Navigation Bar
 class Nav extends StatefulWidget {
   const Nav({Key? key}) : super(key: key);
 
@@ -28,15 +28,16 @@ class Nav extends StatefulWidget {
   State<Nav> createState() => _NavState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
+/// Private State Class For Stateful Widget Nav
 class _NavState extends State<Nav> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 1; // Set Initial Route to Home
   List<Widget> _widgetOptions = <Widget>[
     AlarmHome(),
     Home(),
     Calendar(),
-  ];
+  ]; // Create List Of Page
 
+  /// Press Handler For Bottom Navigation Bar
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -54,19 +55,23 @@ class _NavState extends State<Nav> {
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
             label: 'Alarm',
-          ),
+          ), // Alarm Item For Bottom Navigation Bar
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
+          ), // Home Item For Bottom Navigation Bar
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Calendar',
           ),
-        ],
+        ], // Calendar Item For Bottom Navigation Bar
+
+        /// Style The Bottom Navigation Bar
         backgroundColor: Colors.black,
         selectedItemColor: Colors.purple[400],
         unselectedItemColor: Colors.grey[400],
+
+        /// Config The Bottom Navigation Bar
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
