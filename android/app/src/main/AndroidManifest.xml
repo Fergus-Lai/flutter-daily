@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android_daily">
+    package="com.ferguslai.flutter_daily">
    <application
-        android:label="android_daily"
+        android:label="flutter_daily"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

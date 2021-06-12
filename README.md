@@ -37,6 +37,12 @@ TBD\
 Total: 0%\
 \
 Change Log:\
+\
+2021-06-13\
+Firebase Set Up Done\
+Change Package Name From com.example.android_daily To com.ferguslai.flutter_daily\
+Changed App Label From android_daily To flutter_daily\
+\
 2021-06-12\
 Detail Comment Added\
 Item For Storing Alarm Added\

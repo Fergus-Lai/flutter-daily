@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951837732924",
+    "project_id": "flutter-daily",
+    "storage_bucket": "flutter-daily.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951837732924:android:f49708baab656faed09339",
+        "android_client_info": {
+          "package_name": "com.ferguslai.flutter_daily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951837732924-kaioj5rdhak8652s6qfjped504qielqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_3xvMuFxU-ZHemM3V7kYdsJBf7vJDgnE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951837732924-kaioj5rdhak8652s6qfjped504qielqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
