@@ -38,13 +38,16 @@ Total: 0%\
 \
 Change Log:\
 \
-2021-06-13\
+3rd Commit 2021-06-12\
 Firebase Set Up Done\
 Change Package Name From com.example.android_daily To com.ferguslai.flutter_daily\
 Changed App Label From android_daily To flutter_daily\
 \
-2021-06-12\
+2nd Commit 2021-06-12\
 Detail Comment Added\
 Item For Storing Alarm Added\
 Alarm Home Page Mostly Completed\
-Alarm Change Page Mostly Completed
+Alarm Change Page Mostly Completed\
+\
+First Commit 2021-06-09\
+Initial Commit\
