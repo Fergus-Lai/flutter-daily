@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// Create Style Variable
+// Create Style Variable
 final hourStyle = TextStyle(color: Colors.white, fontSize: 20);
 
-/// Create Stateful Widget For AlarmChange Page
+// Create Stateful Widget For AlarmChange Page
 class AlarmChange extends StatefulWidget {
   const AlarmChange({Key? key}) : super(key: key);
 
@@ -12,26 +12,45 @@ class AlarmChange extends StatefulWidget {
   _AlarmChangeState createState() => _AlarmChangeState();
 }
 
-/// Private State Class For Stateful Widget AlarmChange Page
+// Private State Class For Stateful Widget AlarmChange Page
 class _AlarmChangeState extends State<AlarmChange> {
+  // List Of Week Storing Which Day Of The Week The Alarm Is Active
+  List<bool> dayOfWeekState =
+      List.from([false, true, true, true, true, true, false], growable: false);
+
+  // Declare Variable For Date
+  DateTime selectedTime = DateTime.now();
+  int gap = 0;
+
+  // String For Storing Title Entered
+  String title = "";
+
   // Function For Getting The Duration Between The Next Alarm And Now
   int nextAlarmIn(List<bool> dowState, DateTime time, DateTime now) {
+    // Copy The Selected Time To tmp
     DateTime tmp = time;
+
+    // The Weekday Of tmp Equals To Weekday Of now And The Time of tmp Is Faster Than now
     if ((tmp.weekday == now.weekday) &&
         (tmp.hour >= now.hour) &&
         (tmp.minute >= now.minute)) {
       return tmp.difference(now).inMinutes;
-    } else if (!(dowState.contains(true))) {
+    }
+    // The dowState is all false
+    else if (!(dowState.contains(true))) {
+      // The Time of tmp Is Faster Than now
       if ((tmp.weekday == now.weekday) &&
           (tmp.hour >= now.hour) &&
           (tmp.minute >= now.minute)) {
         return tmp.difference(now).inMinutes;
-      } else {
+      } // The Time of tmp Is Slower Than Now
+      else {
         tmp = tmp.add(Duration(days: 1));
         return tmp.difference(now).inMinutes;
       }
     } else {
       int i = now.weekday;
+      // Do While Loop For Checking The Closest Weekday Which The dowState Is True
       do {
         i++;
         if (dowState[i % 7]) {
@@ -39,15 +58,19 @@ class _AlarmChangeState extends State<AlarmChange> {
           return tmp.difference(now).inMinutes;
         }
       } while (i != now.weekday);
-      return 0;
+      // Return -1 As Error Value
+      return -1;
     }
   }
 
 // Function For Displaying Duration Between Next Alarm And Now
   String nextAlarmDisplay(int gap) {
+    // Getting Days, Hours And Mins With The Gap Value
     int days = gap ~/ 1440;
     int hours = (gap % 1440) ~/ 60;
     int mins = (gap % 1440) % 60;
+
+    // Returning The Displayed Message
     if (days == 0) {
       if (hours == 0) {
         if (mins == 0) {
@@ -129,14 +152,6 @@ class _AlarmChangeState extends State<AlarmChange> {
     }
   }
 
-// List Of Week Storing Which Day Of The Week The Alarm Is Active
-  List<bool> dayOfWeekState =
-      List.from([false, true, true, true, true, true, false], growable: false);
-
-// Declare Variable For Date
-  DateTime selectedTime = DateTime.now();
-  int gap = 0;
-
 // Handle Press On The Day Of Week Button
   void dayOfWeekOnPressHandler(int dow, DateTime time) {
     setState(() {
@@ -215,10 +230,11 @@ class _AlarmChangeState extends State<AlarmChange> {
   void onConfirmPressHandler() {}
 
   @override
+  // Build The Page
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset:
-            false, // Avoid Resize The Screen With Keyboard
+        // Avoid Resize The Screen With Keyboard
+        resizeToAvoidBottomInset: false,
         body: Container(
             color: Colors.black,
             child: Column(
@@ -282,6 +298,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: Container(
                       child: TextField(
+                        controller: TextEditingController(text: title),
                         keyboardType: TextInputType.text,
                         style: TextStyle(color: Colors.white, fontSize: 20),
                         decoration: InputDecoration(

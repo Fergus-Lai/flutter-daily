@@ -1,8 +1,8 @@
 // Class For Storing Each Alarm
 class AlarmItem {
-  final int id;
-  final String name;
-  final bool activate;
+  int id;
+  String name;
+  bool activate;
 
   AlarmItem({required this.id, required this.name, required this.activate});
 

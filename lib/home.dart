@@ -6,13 +6,13 @@ import 'package:intl/intl.dart';
 final DateFormat dateFormatter = DateFormat('E d MMM yy');
 final DateFormat hourFormatter = DateFormat('HH:mm');
 
-/// Create Stateful Widget Home For Home Page
+// Create Stateful Widget Home For Home Page
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-/// Private State Class For Stateful Widget Nav
+// Private State Class For Stateful Widget Nav
 class _HomeState extends State<Home> {
   // Initialize Variable now With The Current Time
   DateTime now = DateTime.now();
@@ -28,14 +28,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    /// Calls The updateTime Function Every Seconds To Update Variable now
+    // Calls The updateTime Function Every Seconds To Update Variable now
     Timer.periodic(Duration(seconds: 1), (timer) {
       updateTime();
     });
     return Container(
       color: Colors.black,
       child: Column(children: <Widget>[
-        Flexible(child: Container(), flex: 2), // Filler
+        // Place Holder
+        Flexible(child: Container(), flex: 2),
+        // Digital Clock Date
         Flexible(
             flex: 1,
             child: Container(
@@ -45,7 +47,8 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
-                    )))), // Date Container
+                    )))),
+        // Digital Clock Time
         Flexible(
             flex: 1,
             child: Container(
@@ -56,13 +59,14 @@ class _HomeState extends State<Home> {
                     color: Colors.white,
                     fontSize: 30,
                   )),
-            )), // Time Container
+            )),
+        // Schedule List
         Flexible(
             flex: 12,
             child: Container(
               color: Colors.black,
               alignment: Alignment.center,
-            )) // Schedule List
+            ))
       ]),
     );
   }
