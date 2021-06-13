@@ -40,7 +40,8 @@ Change Log:\
 \
 3rd Commit 2021-06-12\
 Firebase Set Up Done\
-Change Package Name and IOS Bundle ID From com.example.android_daily To com.ferguslai.flutter_daily\
+Change IOS Bundle ID from com.example.android-daily to com.ferguslai.flutter-daily\
+Change Package Name From com.example.android_daily To com.ferguslai.flutter_daily\
 Changed App Label From android_daily To flutter_daily\
 \
 2nd Commit 2021-06-12\
