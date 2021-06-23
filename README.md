@@ -40,6 +40,7 @@ Change Log:\
 4th Commit 2021-06-23\
 Firebase Auth Added\
 Alarm Item Implemented To Store Alarm\
+Moved Nav to nav.dart\
 \
 3rd Commit 2021-06-12\
 Firebase Set Up Done\
