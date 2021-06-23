@@ -23,13 +23,13 @@ Total: 44%\
 Alarm Change Page:\
 Time Picker: 100%\
 Day Of Week Picker: 100%\
-Title Input: 70%\
-Delete Button: 40%\
-Confirm Button: 40%\
-Data Storage: 0%\
-Total: 55%\
+Title Input: 100%\
+Cancel Button: 100%\
+Confirm Button: 50%\
+Data Storage: 10%\
+Total: 75%\
 \
-Total: 33%\
+Total: 45%\
 \
 Calendar:\
 \
@@ -37,6 +37,9 @@ TBD\
 Total: 0%\
 \
 Change Log:\
+4th Commit 2021-06-23\
+Firebase Auth Added\
+Alarm Item Implemented To Store Alarm\
 \
 3rd Commit 2021-06-12\
 Firebase Set Up Done\

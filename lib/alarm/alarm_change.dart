@@ -1,67 +1,34 @@
+import 'package:intl/intl.dart';
+import 'package:android_daily/alarm/alarm_item.dart';
+import 'package:android_daily/alarm/alarm_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Create Style Variable
 final hourStyle = TextStyle(color: Colors.white, fontSize: 20);
 
+// Create Time Formatter
+final timeForamtter = DateFormat("HH:mm");
+
 // Create Stateful Widget For AlarmChange Page
 class AlarmChange extends StatefulWidget {
-  const AlarmChange({Key? key}) : super(key: key);
+  final AlarmItem passedAlarm;
+  AlarmChange({Key? key, required this.passedAlarm}) : super(key: key);
 
   @override
-  _AlarmChangeState createState() => _AlarmChangeState();
+  _AlarmChangeState createState() => new _AlarmChangeState(passedAlarm);
 }
 
 // Private State Class For Stateful Widget AlarmChange Page
 class _AlarmChangeState extends State<AlarmChange> {
+  // Declare Variable For AlarmItem
+  AlarmItem alarm;
+  _AlarmChangeState(this.alarm);
+
+  // Create Firebase Instances
+  final db = FirebaseFirestore.instance;
   // List Of Week Storing Which Day Of The Week The Alarm Is Active
-  List<bool> dayOfWeekState =
-      List.from([false, true, true, true, true, true, false], growable: false);
-
-  // Declare Variable For Date
-  DateTime selectedTime = DateTime.now();
-  int gap = 0;
-
-  // String For Storing Title Entered
-  String title = "";
-
-  // Function For Getting The Duration Between The Next Alarm And Now
-  int nextAlarmIn(List<bool> dowState, DateTime time, DateTime now) {
-    // Copy The Selected Time To tmp
-    DateTime tmp = time;
-
-    // The Weekday Of tmp Equals To Weekday Of now And The Time of tmp Is Faster Than now
-    if ((tmp.weekday == now.weekday) &&
-        (tmp.hour >= now.hour) &&
-        (tmp.minute >= now.minute)) {
-      return tmp.difference(now).inMinutes;
-    }
-    // The dowState is all false
-    else if (!(dowState.contains(true))) {
-      // The Time of tmp Is Faster Than now
-      if ((tmp.weekday == now.weekday) &&
-          (tmp.hour >= now.hour) &&
-          (tmp.minute >= now.minute)) {
-        return tmp.difference(now).inMinutes;
-      } // The Time of tmp Is Slower Than Now
-      else {
-        tmp = tmp.add(Duration(days: 1));
-        return tmp.difference(now).inMinutes;
-      }
-    } else {
-      int i = now.weekday;
-      // Do While Loop For Checking The Closest Weekday Which The dowState Is True
-      do {
-        i++;
-        if (dowState[i % 7]) {
-          tmp = tmp.add(Duration(days: i - now.weekday));
-          return tmp.difference(now).inMinutes;
-        }
-      } while (i != now.weekday);
-      // Return -1 As Error Value
-      return -1;
-    }
-  }
 
 // Function For Displaying Duration Between Next Alarm And Now
   String nextAlarmDisplay(int gap) {
@@ -153,10 +120,9 @@ class _AlarmChangeState extends State<AlarmChange> {
   }
 
 // Handle Press On The Day Of Week Button
-  void dayOfWeekOnPressHandler(int dow, DateTime time) {
+  void dayOfWeekOnPressHandler(int dow) {
     setState(() {
-      dayOfWeekState[dow] = !dayOfWeekState[dow];
-      gap = nextAlarmIn(dayOfWeekState, time, DateTime.now());
+      alarm.dowState[dow] = !alarm.dowState[dow];
     });
   }
 
@@ -209,25 +175,28 @@ class _AlarmChangeState extends State<AlarmChange> {
         child: AspectRatio(
             aspectRatio: 1,
             child: ElevatedButton(
-                onPressed: () => dayOfWeekOnPressHandler(dow, selectedTime),
+                onPressed: () => dayOfWeekOnPressHandler(dow),
                 child: Container(child: Text('$text')),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(color)))));
   }
 
   // Handle Scrolling Action For Time Picking
-  void onTimeChangeManager(DateTime time) {
+  void onTimeChangeManager(DateTime time, timeFormatter) {
     setState(() {
-      selectedTime = time;
-      gap = nextAlarmIn(dayOfWeekState, time, DateTime.now());
+      alarm.time = timeFormatter.format(time);
     });
   }
 
   // Handle Delete Button Press
-  void onDeletePressHandler() {}
+  void onCancelPressHandler() {
+    Navigator.pop(context);
+  }
 
   // Handle Confirm Button Press
-  void onConfirmPressHandler() {}
+  void onConfirmPressHandler() async {
+    Navigator.pop(context);
+  }
 
   @override
   // Build The Page
@@ -260,7 +229,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                         use24hFormat: true,
                         minuteInterval: 1,
                         onDateTimeChanged: (time) =>
-                            {onTimeChangeManager(time)},
+                            {onTimeChangeManager(time, timeForamtter)},
                       ),
                     )),
                 // Place Holder
@@ -276,13 +245,13 @@ class _AlarmChangeState extends State<AlarmChange> {
                       children: List<Widget>.generate(
                           7,
                           (index) =>
-                              dayOfWeekButtonGenerator(index, dayOfWeekState))),
+                              dayOfWeekButtonGenerator(index, alarm.dowState))),
                 ),
                 // Display The Time Between Next Alarm and Now
                 Flexible(
                   flex: 1,
                   child: Center(
-                      child: Text(nextAlarmDisplay(gap),
+                      child: Text(nextAlarmDisplay(alarm.nextAlarmIn()),
                           style: TextStyle(fontSize: 18, color: Colors.white))),
                 ),
                 // Divider
@@ -298,7 +267,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: Container(
                       child: TextField(
-                        controller: TextEditingController(text: title),
+                        controller: TextEditingController(text: alarm.title),
                         keyboardType: TextInputType.text,
                         style: TextStyle(color: Colors.white, fontSize: 20),
                         decoration: InputDecoration(
@@ -327,15 +296,15 @@ class _AlarmChangeState extends State<AlarmChange> {
                       children: [
                         // Delete Button
                         ElevatedButton(
-                            onPressed: onDeletePressHandler,
+                            onPressed: onCancelPressHandler,
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.red.shade800)),
                             child: Row(
                               children: [
-                                Icon(Icons.delete, color: Colors.white),
+                                Icon(Icons.close, color: Colors.white),
                                 Text(
-                                  "Delete",
+                                  "Cancel",
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.white),
                                 ),
@@ -349,7 +318,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                                     Colors.green.shade800)),
                             child: Row(
                               children: [
-                                Icon(Icons.check, color: Colors.white),
+                                Icon(Icons.done, color: Colors.white),
                                 Text(
                                   "Confirm",
                                   style: TextStyle(

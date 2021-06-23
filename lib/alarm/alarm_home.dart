@@ -15,18 +15,36 @@ class AlarmHome extends StatefulWidget {
 class _AlarmHomeState extends State<AlarmHome> {
   // Create Alarm List
   List<AlarmItem> alarmList = [
-    AlarmItem(id: 1, name: "Item 1", activate: true),
-    AlarmItem(id: 2, name: "Item 2", activate: false),
-    AlarmItem(id: 3, name: "Item 3", activate: true),
+    AlarmItem(
+        id: 1,
+        title: "Item 1",
+        time: '08:30',
+        dowState: [false, false, false, true, true],
+        activate: true),
+    AlarmItem(
+        id: 2,
+        title: "Item 2",
+        time: '10:30',
+        dowState: [false, false, true, true, true],
+        activate: false),
+    AlarmItem(
+        id: 3,
+        title: "Item 3",
+        time: '12:30',
+        dowState: [false, true, false, true, true],
+        activate: true),
   ];
 
   // On Press Handler For Add Button
   void addHandler() {
     Navigator.push(
-      // Navigate To AlarmChange Page
-      context,
-      MaterialPageRoute(builder: (context) => AlarmChange()),
-    );
+        // Navigate To AlarmChange Page
+        context,
+        MaterialPageRoute(
+          builder: (context) => AlarmChange(
+            passedAlarm: AlarmItem(id: 4),
+          ),
+        ));
   }
 
   // On Press Handler For Disable Button
@@ -78,11 +96,15 @@ class _AlarmHomeState extends State<AlarmHome> {
                       alignment: Alignment.centerLeft,
                       height: 60,
                       child: Padding(
-                          padding:
-                              EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                          child: Text('${alarmList[index].name}',
-                              style:
-                                  TextStyle(color: textColor, fontSize: 30)))),
+                          padding: EdgeInsets.only(left: 10),
+                          child: ListTile(
+                            title: Text('${alarmList[index].title}',
+                                style:
+                                    TextStyle(color: textColor, fontSize: 30)),
+                            subtitle: Text('${alarmList[index].time}',
+                                style:
+                                    TextStyle(color: textColor, fontSize: 15)),
+                          ))),
                   // List Of Buttons In The Slider
                   actions: <Widget>[
                     // Enable/Disable Button
