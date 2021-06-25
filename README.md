@@ -25,24 +25,26 @@ Total: 50%\
 \
 Alarm:\
 \
-Data Storage: 0%\
+Alarm Ring: 0%\
+\
+Data Storage: 100%\
 \
 Alarm Home Page:\
 List: 100%\
-Add Button: 70%\
-Edit Button: 50%\
-Delete Button: 0%\
-Disable Button: 0%\
-Total: 44%\
+Add Button: 100%\
+Edit Button: 100%\
+Delete Button: 100%\
+Disable Button: 100%\
+Total: 100%\
 \
 Alarm Change Page:\
 Time Picker: 100%\
 Day Of Week Picker: 100%\
 Title Input: 100%\
 Cancel Button: 100%\
-Confirm Button: 50%\
-Data Storage: 10%\
-Total: 75%\
+Confirm Button: 100%\
+Data Storage: 100%\
+Total: 95%\
 \
 Total: 45%\
 \
@@ -52,11 +54,14 @@ TBD\
 Total: 0%\
 \
 Change Log:\
+6th Commit 2021-6-26\
+Alarm Pages Done\
 5th Commit 2021-06-25\
 Log In Added\
 Sign In Page Completed\
 Sign Up Page Completed\
 Account Page Added\
+\
 Sign Out Button Added\
 4th Commit 2021-06-23\
 Firebase Auth Added\

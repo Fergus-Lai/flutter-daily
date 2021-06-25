@@ -40,12 +40,20 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Widget _home() {
+    if (logIn) {
+      return Nav();
+    } else {
+      return SignIn();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     logInCheck();
     return MaterialApp(
       title: 'Flutter Daily',
-      home: logIn ? Nav() : SignIn(),
+      home: _home(),
     );
   }
 }

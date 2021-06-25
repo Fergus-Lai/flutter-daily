@@ -1,22 +1,41 @@
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 final DateFormat dateFormatter = DateFormat('HH:mm');
+var uuid = Uuid();
 
 // Class For Storing Each Alarm
 class AlarmItem {
-  int id;
+  String id;
   String title;
   String time;
   List<bool> dowState;
   bool activate;
   AlarmItem(
-      {required this.id,
-      this.title = '',
+      {String? id,
+      this.title = 'Alarm',
       List<bool>? dowState,
       this.activate = true,
       String time = ""})
-      : dowState = dowState ?? [false, true, true, true, true, true, false],
+      : id = id ?? uuid.v1(),
+        dowState = dowState ?? [false, true, true, true, true, true, false],
         time = time == "" ? dateFormatter.format(DateTime.now()) : time;
+
+  String dowStateToString() {
+    String tmp = '';
+    for (int i = 0; i <= 6; i++) {
+      tmp += this.dowState[i] ? '1' : '0';
+    }
+    return tmp;
+  }
+
+  static List<bool> getDowState(String str) {
+    List<bool> tmp = [];
+    for (int i = 0; i <= 6; i++) {
+      tmp.add(str[i] == '1' ? true : false);
+    }
+    return tmp;
+  }
 
   DateTime timeToDateTime() {
     DateTime now = DateTime.now();
@@ -45,6 +64,5 @@ class AlarmItem {
       tmp = tmp.add(Duration(days: 1));
       return tmp.difference(now).inMinutes;
     }
-    // Return -1 As Error Value
   }
 }

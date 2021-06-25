@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:android_daily/alarm/alarm_item.dart';
 
@@ -26,11 +27,16 @@ class _AlarmChangeState extends State<AlarmChange> {
   AlarmItem alarm;
   _AlarmChangeState(this.alarm);
 
-  // Create Firebase Instances
-  final db = FirebaseFirestore.instance;
-  // List Of Week Storing Which Day Of The Week The Alarm Is Active
+  // Text Editing Controller For Title Text Field
+  late TextEditingController titleController;
 
-// Function For Displaying Duration Between Next Alarm And Now
+  @override
+  void initState() {
+    titleController = TextEditingController(text: alarm.title);
+    super.initState();
+  }
+
+  // Function For Displaying Duration Between Next Alarm And Now
   String nextAlarmDisplay(int gap) {
     // Getting Days, Hours And Mins With The Gap Value
     int days = gap ~/ 1440;
@@ -195,6 +201,18 @@ class _AlarmChangeState extends State<AlarmChange> {
 
   // Handle Confirm Button Press
   void onConfirmPressHandler() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('alarm')
+        .doc(alarm.id)
+        .set({
+      'id': alarm.id,
+      'title': titleController.text,
+      'time': alarm.time,
+      'dowState': alarm.dowStateToString(),
+      'activate': alarm.activate ? '1' : '0',
+    });
     Navigator.pop(context);
   }
 
@@ -225,7 +243,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                       ),
                       child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
-                        initialDateTime: DateTime.now(),
+                        initialDateTime: alarm.timeToDateTime(),
                         use24hFormat: true,
                         minuteInterval: 1,
                         onDateTimeChanged: (time) =>
@@ -267,7 +285,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: Container(
                       child: TextField(
-                        controller: TextEditingController(text: alarm.title),
+                        controller: titleController,
                         keyboardType: TextInputType.text,
                         style: TextStyle(color: Colors.white, fontSize: 20),
                         decoration: InputDecoration(

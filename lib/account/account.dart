@@ -5,7 +5,6 @@ class Account extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
   Future<void> onSignOutPressedHandler() async {
     await auth.signOut();
-    print(auth.currentUser);
   }
 
   @override
