@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'account/account.dart';
 import 'home.dart';
 import 'alarm/alarm_home.dart';
 import 'calendar.dart';
@@ -15,6 +17,7 @@ class Nav extends StatefulWidget {
 
 // Private State Class For Stateful Widget Nav
 class _NavState extends State<Nav> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   // Set Initial Route to Home
   int _selectedIndex = 1;
 
@@ -23,6 +26,7 @@ class _NavState extends State<Nav> {
     AlarmHome(),
     Home(),
     Calendar(),
+    Account(),
   ];
 
   // On Press Handler For Bottom Navigation Bar
@@ -35,42 +39,52 @@ class _NavState extends State<Nav> {
   @override
   // Building The Main App
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Displaying The Page Selected
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        // Items Displayed In Bottom Navigation Bar
-        items: const <BottomNavigationBarItem>[
-          // Alarm Item
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
-            label: 'Alarm',
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          // Displaying The Page Selected
+          body: Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
           ),
-          // Home Item
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          // Calendar Item
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-        ],
 
-        // Style The Bottom Navigation Bar
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.purple[400],
-        unselectedItemColor: Colors.grey[400],
+          // Bottom Navigation Bar
+          bottomNavigationBar: BottomNavigationBar(
+            // Set The Type To Fix
+            type: BottomNavigationBarType.fixed,
 
-        // Config The Bottom Navigation Bar
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
+            // Style The Bottom Navigation Bar
+            backgroundColor: Colors.black,
+            selectedItemColor: Colors.purple[400],
+            unselectedItemColor: Colors.grey[400],
+
+            // Items Displayed In Bottom Navigation Bar
+            items: <BottomNavigationBarItem>[
+              // Alarm Item
+              BottomNavigationBarItem(
+                icon: Icon(Icons.alarm),
+                label: 'Alarm',
+              ),
+              // Home Item
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              // Calendar Item
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today),
+                label: 'Calendar',
+              ),
+              // Account Item
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Account',
+              ),
+            ],
+
+            // Config The Bottom Navigation Bar
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
+        ));
   }
 }

@@ -3,6 +3,21 @@
 \
 Features:\
 \
+Firebase Authentication\
+\
+Sign In Page:70%\
+Button To Navigate To Sign Up Page: 100%\
+Sign In:100%\
+Forget Password:0%\
+\
+Sign Up Page:100%\
+Sign Up:100%\
+Button To Navigate To Sign In Page: 100%\
+\
+Account Page:30%\
+Show Account Detail:0%\
+Log Out Button:100%\
+\
 Home:\
 Digital Clock 100%\
 Upcoming Event Display 0%\
@@ -37,6 +52,12 @@ TBD\
 Total: 0%\
 \
 Change Log:\
+5th Commit 2021-06-25\
+Log In Added\
+Sign In Page Completed\
+Sign Up Page Completed\
+Account Page Added\
+Sign Out Button Added\
 4th Commit 2021-06-23\
 Firebase Auth Added\
 Alarm Item Implemented To Store Alarm\
