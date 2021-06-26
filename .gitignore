@@ -161,10 +161,7 @@ lib/generated_plugin_registrant.dart
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode
 *.code-workspace
 
 ### VisualStudioCode Patch ###
