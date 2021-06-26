@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase App
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
+// Firebase Auth Instance
 FirebaseAuth auth = FirebaseAuth.instance;
 
 // Main application Widget
@@ -24,36 +26,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool logIn = auth.currentUser == null ? false : true;
+  // Initialize Widget App Used For Home
+  Widget app = auth.currentUser == null ? SignIn() : Nav();
 
+  // Listen To Auth State Change And Change Page According To User Value
   void logInCheck() {
     auth.authStateChanges().listen((User? user) {
       if (user == null) {
         setState(() {
-          logIn = false;
+          app = SignIn();
         });
       } else {
         setState(() {
-          logIn = true;
+          app = Nav();
         });
       }
     });
   }
 
-  Widget _home() {
-    if (logIn) {
-      return Nav();
-    } else {
-      return SignIn();
-    }
-  }
-
+  // Building The App
   @override
   Widget build(BuildContext context) {
     logInCheck();
     return MaterialApp(
       title: 'Flutter Daily',
-      home: _home(),
+      home: app,
     );
   }
 }

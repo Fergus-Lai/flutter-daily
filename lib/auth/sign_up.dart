@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
+import 'package:android_daily/style.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -100,7 +102,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.black,
+        backgroundColor: backgroundColor,
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -114,83 +116,68 @@ class _SignUpState extends State<SignUp> {
                 TextField(
                     controller: userNameController,
                     keyboardType: TextInputType.text,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: userNameError
-                                    ? Colors.red.shade900
-                                    : Colors.grey.shade600)),
+                            borderSide:
+                                BorderSide(color: helperColor(userNameError))),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        focusColor: Colors.white,
+                            borderSide: BorderSide(color: activeTextColor)),
+                        focusColor: activeTextColor,
                         hintText: "User Name",
-                        hintStyle:
-                            TextStyle(color: Colors.grey[400], fontSize: 20),
+                        hintStyle: inactiveTextStyle,
                         helperText: userNameHelper,
                         helperStyle: TextStyle(
-                            color: userNameError
-                                ? Colors.red.shade900
-                                : Colors.grey.shade600,
-                            fontSize: 15),
+                            color: helperColor(userNameError),
+                            fontSize: helperSize),
                         icon: Icon(
                           Icons.person,
-                          color: Colors.white,
+                          color: activeTextColor,
                         ))),
                 // Email Text Field
                 TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: emailError
-                                    ? Colors.red.shade900
-                                    : Colors.grey.shade600)),
+                            borderSide:
+                                BorderSide(color: helperColor(emailError))),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        focusColor: Colors.white,
+                            borderSide: BorderSide(color: activeTextColor)),
+                        focusColor: activeTextColor,
                         hintText: "Email",
-                        hintStyle:
-                            TextStyle(color: Colors.grey[400], fontSize: 20),
+                        hintStyle: inactiveTextStyle,
                         helperText: emailHelper,
                         helperStyle: TextStyle(
-                            color: emailError
-                                ? Colors.red.shade900
-                                : Colors.grey.shade600,
-                            fontSize: 15),
+                            color: helperColor(emailError),
+                            fontSize: helperSize),
                         icon: Icon(
                           Icons.mail,
-                          color: Colors.white,
+                          color: activeTextColor,
                         ))),
                 // Password Text Field
                 TextField(
                   controller: passwordController,
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: passwordError
-                                  ? Colors.red.shade900
-                                  : Colors.grey.shade600)),
+                          borderSide:
+                              BorderSide(color: helperColor(passwordError))),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white)),
-                      focusColor: Colors.white,
+                          borderSide: BorderSide(color: activeTextColor)),
+                      focusColor: activeTextColor,
                       hintText: "Pasword",
-                      hintStyle:
-                          TextStyle(color: Colors.grey[400], fontSize: 20),
+                      hintStyle: inactiveTextStyle,
                       helperText: passwordHelper,
                       helperStyle: TextStyle(
-                          color: passwordError
-                              ? Colors.red.shade900
-                              : Colors.grey.shade600,
-                          fontSize: 15),
+                          color: helperColor(passwordError),
+                          fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,
-                        color: Colors.white,
+                        color: activeTextColor,
                       )),
                 ),
                 // Validate Password Text Field
@@ -198,55 +185,40 @@ class _SignUpState extends State<SignUp> {
                   controller: validationController,
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: validationError
-                                  ? Colors.red.shade900
-                                  : Colors.grey.shade600)),
+                          borderSide:
+                              BorderSide(color: helperColor(validationError))),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white)),
-                      focusColor: Colors.white,
+                          borderSide: BorderSide(color: activeTextColor)),
+                      focusColor: activeTextColor,
                       hintText: "Re-enter Password",
-                      hintStyle:
-                          TextStyle(color: Colors.grey[400], fontSize: 20),
+                      hintStyle: inactiveTextStyle,
                       helperText: validationHelper,
                       helperStyle: TextStyle(
-                          color: validationError
-                              ? Colors.red.shade900
-                              : Colors.grey.shade600,
-                          fontSize: 15),
+                          color: helperColor(validationError),
+                          fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,
-                        color: Colors.white,
+                        color: activeTextColor,
                       )),
                 ),
                 // Sign Up Button
-                SizedBox(
-                    width: 250,
-                    child: ElevatedButton(
-                        onPressed: onSignUpPressHandler,
-                        style: ElevatedButton.styleFrom(
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ))),
+                roundedSquareButton(onSignUpPressHandler, "Sign Up"),
                 // Sign In Text
                 Center(
                   child: RichText(
                     text: TextSpan(
                         text: 'Already Have An Account? ',
-                        style: TextStyle(color: Colors.grey[200], fontSize: 15),
+                        style: TextStyle(
+                            color: activeTextColor, fontSize: helperSize),
                         children: <TextSpan>[
                           TextSpan(
                               text: 'Sign In',
                               style: TextStyle(
-                                  color: Colors.lightBlue, fontSize: 15),
+                                  color: activeButtonColor,
+                                  fontSize: helperSize),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => onSignInPressHandler())
                         ]),

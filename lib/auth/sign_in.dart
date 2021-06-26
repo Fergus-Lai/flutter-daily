@@ -1,7 +1,10 @@
-import 'package:android_daily/auth/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+
+import 'package:android_daily/style.dart';
+import 'package:android_daily/auth/sign_up.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -57,7 +60,7 @@ class _SignUpState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.black,
+        backgroundColor: backgroundColor,
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -71,83 +74,63 @@ class _SignUpState extends State<SignIn> {
                 TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: emailError
-                                    ? Colors.red.shade900
-                                    : Colors.grey.shade600)),
+                            borderSide:
+                                BorderSide(color: helperColor(emailError))),
                         focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        focusColor: Colors.white,
+                            borderSide: BorderSide(color: activeTextColor)),
+                        focusColor: activeTextColor,
                         hintText: "Email",
-                        hintStyle:
-                            TextStyle(color: Colors.grey[400], fontSize: 20),
+                        hintStyle: inactiveTextStyle,
                         helperText: emailHelper,
                         helperStyle: TextStyle(
-                            color: emailError
-                                ? Colors.red.shade900
-                                : Colors.grey.shade600,
-                            fontSize: 15),
+                            color: helperColor(emailError),
+                            fontSize: helperSize),
                         icon: Icon(
                           Icons.mail,
-                          color: Colors.white,
+                          color: activeTextColor,
                         ))),
                 // Password Text Field
                 TextField(
                   controller: passwordController,
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: passwordError
-                                  ? Colors.red.shade900
-                                  : Colors.grey.shade600)),
+                          borderSide:
+                              BorderSide(color: helperColor(passwordError))),
                       focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white)),
-                      focusColor: Colors.white,
+                          borderSide: BorderSide(color: activeTextColor)),
+                      focusColor: activeTextColor,
                       hintText: "Pasword",
-                      hintStyle:
-                          TextStyle(color: Colors.grey[400], fontSize: 20),
+                      hintStyle: inactiveTextStyle,
                       helperText: passwordHelper,
                       helperStyle: TextStyle(
-                          color: passwordError
-                              ? Colors.red.shade900
-                              : Colors.grey.shade600,
-                          fontSize: 15),
+                          color: helperColor(passwordError),
+                          fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,
-                        color: Colors.white,
+                        color: activeTextColor,
                       )),
                 ),
                 // Sign In Button
-                SizedBox(
-                    width: 250,
-                    child: ElevatedButton(
-                        onPressed: onSignInPressHandler,
-                        style: ElevatedButton.styleFrom(
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ))),
+                roundedSquareButton(onSignInPressHandler, "Sign In"),
                 // Sign Up Text
                 Center(
                   child: RichText(
                     text: TextSpan(
                         text: r"Don't Have An Account? ",
-                        style: TextStyle(color: Colors.grey[200], fontSize: 15),
+                        style: TextStyle(
+                            color: activeTextColor, fontSize: helperSize),
                         children: <TextSpan>[
                           TextSpan(
                               text: 'Sign Up',
                               style: TextStyle(
-                                  color: Colors.lightBlue, fontSize: 15),
+                                  color: activeButtonColor,
+                                  fontSize: helperSize),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => onSignUpPressHandler())
                         ]),

@@ -1,3 +1,4 @@
+import 'package:android_daily/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -94,37 +95,37 @@ class _AlarmHomeState extends State<AlarmHome> {
           if (alarmList.connectionState != ConnectionState.active) {
             print(alarmList.connectionState);
             return Scaffold(
-              backgroundColor: Colors.black,
+              backgroundColor: backgroundColor,
               body: Center(
                 child: (Text(
                   "Loading",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
+                  style: titleTextStyle,
                 )),
               ),
             );
           } else {
             return Scaffold(
-              backgroundColor: Colors.black,
+              backgroundColor: backgroundColor,
               // Create ListView Of All The Item In Alarm List
               body: ListView.builder(
                   itemCount: alarmList.data!.length,
                   itemBuilder: (context, index) {
                     // Set Style Variables According To The State Of The Item
                     if (alarmList.data![index].activate) {
-                      textColor = Colors.white;
+                      textColor = activeTextColor;
                       changeStateText = 'Disable';
                       changeStateIcon = Icons.pause;
                       changeStateColor = Colors.amber;
                     } else {
-                      textColor = Colors.grey[600];
+                      textColor = inactiveColor;
                       changeStateText = 'Enable';
                       changeStateIcon = Icons.play_arrow;
-                      changeStateColor = Colors.green[900];
+                      changeStateColor = safeColor;
                     }
 
                     // List Item
                     return Column(
-                      children: [
+                      children: <Widget>[
                         // Creating Slider
                         Slidable(
                           actionPane: SlidableDrawerActionPane(),
@@ -139,11 +140,13 @@ class _AlarmHomeState extends State<AlarmHome> {
                                     title: Text(
                                         '${alarmList.data![index].title}',
                                         style: TextStyle(
-                                            color: textColor, fontSize: 30)),
+                                            color: textColor,
+                                            fontSize: titleSize)),
                                     subtitle: Text(
                                         '${alarmList.data![index].time}',
                                         style: TextStyle(
-                                            color: textColor, fontSize: 15)),
+                                            color: textColor,
+                                            fontSize: helperSize)),
                                   ))),
                           // List Of Buttons In The Slider
                           actions: <Widget>[
@@ -159,14 +162,14 @@ class _AlarmHomeState extends State<AlarmHome> {
                             // Edit Button
                             IconSlideAction(
                               caption: 'Edit',
-                              color: Colors.lightBlue[900],
+                              color: editColor,
                               icon: Icons.edit,
                               onTap: () => editHandler(alarmList.data![index]),
                             ),
                             // Delete Button
                             IconSlideAction(
                               caption: 'Delete',
-                              color: Colors.red[900],
+                              color: warningColor,
                               icon: Icons.delete,
                               onTap: () =>
                                   deleteHandler(alarmList.data![index].id),
@@ -174,11 +177,7 @@ class _AlarmHomeState extends State<AlarmHome> {
                           ],
                         ),
                         // Divider
-                        Divider(
-                          height: 5,
-                          thickness: 2,
-                          color: Colors.grey[100],
-                        )
+                        divider(),
                       ],
                     );
                   }),
@@ -186,8 +185,8 @@ class _AlarmHomeState extends State<AlarmHome> {
               // Add Button
               floatingActionButton: FloatingActionButton(
                 onPressed: () => addHandler(),
-                child: const Icon(Icons.add),
-                backgroundColor: Colors.cyan,
+                child: Icon(Icons.add),
+                backgroundColor: activeButtonColor,
               ),
             );
           }

@@ -1,3 +1,4 @@
+import 'package:android_daily/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:android_daily/alarm/alarm_item.dart';
@@ -5,9 +6,6 @@ import 'package:android_daily/alarm/alarm_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-// Create Style Variable
-final hourStyle = TextStyle(color: Colors.white, fontSize: 20);
 
 // Create Time Formatter
 final timeForamtter = DateFormat("HH:mm");
@@ -174,17 +172,18 @@ class _AlarmChangeState extends State<AlarmChange> {
         break;
     }
     // Setting The Color Of The Button According To True or False In the dowState[dow]
-    Color? color = dowState[dow] ? Colors.cyan : Colors.grey[600];
+    Color color = dowState[dow] ? activeButtonColor : inactiveColor;
     // Returning The Button
-    return Flexible(
-        flex: 1,
-        child: AspectRatio(
-            aspectRatio: 1,
-            child: ElevatedButton(
-                onPressed: () => dayOfWeekOnPressHandler(dow),
-                child: Container(child: Text('$text')),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(color)))));
+    return SizedBox(
+        height: MediaQuery.of(context).size.width / 8,
+        width: MediaQuery.of(context).size.width / 8,
+        child: ElevatedButton(
+            onPressed: () => dayOfWeekOnPressHandler(dow),
+            child: Container(child: Text('$text')),
+            style: ElevatedButton.styleFrom(
+                primary: color,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)))));
   }
 
   // Handle Scrolling Action For Time Picking
@@ -222,137 +221,116 @@ class _AlarmChangeState extends State<AlarmChange> {
     return Scaffold(
         // Avoid Resize The Screen With Keyboard
         resizeToAvoidBottomInset: false,
-        body: Container(
-            color: Colors.black,
-            child: Column(
-              children: [
-                // Place Holder
-                Flexible(
-                    flex: 2,
-                    child: Container(
-                      color: Colors.black,
-                    )),
-                // Time Picker
-                Flexible(
-                    flex: 4,
-                    child: CupertinoTheme(
-                      data: CupertinoThemeData(
-                        textTheme: CupertinoTextThemeData(
-                          dateTimePickerTextStyle: hourStyle,
-                        ),
-                      ),
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.time,
-                        initialDateTime: alarm.timeToDateTime(),
-                        use24hFormat: true,
-                        minuteInterval: 1,
-                        onDateTimeChanged: (time) =>
-                            {onTimeChangeManager(time, timeForamtter)},
-                      ),
-                    )),
-                // Place Holder
-                Flexible(
-                  flex: 1,
-                  child: Container(),
-                ),
-                // Day Of Week Button Row
-                Flexible(
-                  flex: 2,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(
-                          7,
-                          (index) =>
-                              dayOfWeekButtonGenerator(index, alarm.dowState))),
-                ),
-                // Display The Time Between Next Alarm and Now
-                Flexible(
-                  flex: 1,
-                  child: Center(
-                      child: Text(nextAlarmDisplay(alarm.nextAlarmIn()),
-                          style: TextStyle(fontSize: 18, color: Colors.white))),
-                ),
-                // Divider
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 2,
-                ),
-                // Text Input For Title
-                Flexible(
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Container(
-                      child: TextField(
-                        controller: titleController,
-                        keyboardType: TextInputType.text,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                        decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade600)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            focusColor: Colors.white,
-                            hintText: "Title",
-                            hintStyle: TextStyle(
-                                color: Colors.grey[400], fontSize: 20),
-                            icon: Icon(
-                              Icons.title,
-                              color: Colors.white,
-                            )),
-                      ),
+        backgroundColor: backgroundColor,
+        body: Column(
+          children: [
+            // Place Holder
+            Flexible(flex: 2, child: Container()),
+            // Time Picker
+            Flexible(
+                flex: 4,
+                child: CupertinoTheme(
+                  data: CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(
+                      dateTimePickerTextStyle: activeTextStyle,
                     ),
                   ),
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.time,
+                    initialDateTime: alarm.timeToDateTime(),
+                    use24hFormat: true,
+                    minuteInterval: 1,
+                    onDateTimeChanged: (time) =>
+                        {onTimeChangeManager(time, timeForamtter)},
+                  ),
+                )),
+            // Place Holder
+            Flexible(
+              flex: 1,
+              child: Container(),
+            ),
+            // Day Of Week Button Row
+            Flexible(
+              flex: 2,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List<Widget>.generate(
+                      7,
+                      (index) =>
+                          dayOfWeekButtonGenerator(index, alarm.dowState))),
+            ),
+            // Display The Time Between Next Alarm and Now
+            Flexible(
+              flex: 1,
+              child: Center(
+                  child: Text(nextAlarmDisplay(alarm.nextAlarmIn()),
+                      style: TextStyle(fontSize: 18, color: activeTextColor))),
+            ),
+            // Divider
+            divider(),
+            // Text Input For Title
+            Flexible(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                child: TextField(
+                  controller: titleController,
+                  keyboardType: TextInputType.text,
+                  style: activeTextStyle,
+                  decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: inactiveColor)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: activeTextColor)),
+                      focusColor: activeTextColor,
+                      hintText: "Title",
+                      hintStyle: inactiveTextStyle,
+                      icon: Icon(
+                        Icons.title,
+                        color: activeTextColor,
+                      )),
                 ),
-                // Row Of Delete And Confirm Button
-                Flexible(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Delete Button
-                        ElevatedButton(
-                            onPressed: onCancelPressHandler,
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.red.shade800)),
-                            child: Row(
-                              children: [
-                                Icon(Icons.close, color: Colors.white),
-                                Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            )),
-                        // Confirm Button
-                        ElevatedButton(
-                            onPressed: onConfirmPressHandler,
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.green.shade800)),
-                            child: Row(
-                              children: [
-                                Icon(Icons.done, color: Colors.white),
-                                Text(
-                                  "Confirm",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            )),
-                      ],
-                    )),
-                // Place Holder
-                Flexible(
-                    flex: 10,
-                    child: Container(
-                      color: Colors.black,
-                    ))
-              ],
-            )));
+              ),
+            ),
+            // Row Of Delete And Confirm Button
+            Flexible(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Delete Button
+                    ElevatedButton(
+                        onPressed: onCancelPressHandler,
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(warningColor)),
+                        child: Row(
+                          children: [
+                            Icon(Icons.close, color: activeTextColor),
+                            Text(
+                              "Cancel",
+                              style: activeTextStyle,
+                            ),
+                          ],
+                        )),
+                    // Confirm Button
+                    ElevatedButton(
+                        onPressed: onConfirmPressHandler,
+                        style: ElevatedButton.styleFrom(primary: safeColor),
+                        child: Row(
+                          children: [
+                            Icon(Icons.done, color: activeTextColor),
+                            Text(
+                              "Confirm",
+                              style: activeTextStyle,
+                            ),
+                          ],
+                        )),
+                  ],
+                )),
+            // Place Holder
+            Flexible(flex: 10, child: Container())
+          ],
+        ));
   }
 }

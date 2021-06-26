@@ -1,7 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+// Declaring DateFormatter With intl for dateformatting
 final DateFormat dateFormatter = DateFormat('HH:mm');
+// Declaring Uuid With Uuid For ID generation
 var uuid = Uuid();
 
 // Class For Storing Each Alarm
@@ -17,10 +19,14 @@ class AlarmItem {
       List<bool>? dowState,
       this.activate = true,
       String time = ""})
+      // If id is null, set id to uuid.v1()
       : id = id ?? uuid.v1(),
+        // if dowState is null set dowState to a default list
         dowState = dowState ?? [false, true, true, true, true, true, false],
+        // if time is empty set the current time to the time variable with formatter
         time = time == "" ? dateFormatter.format(DateTime.now()) : time;
 
+  // Convert List Of dowState To A String
   String dowStateToString() {
     String tmp = '';
     for (int i = 0; i <= 6; i++) {
@@ -29,6 +35,7 @@ class AlarmItem {
     return tmp;
   }
 
+  // Convert String To A List Of Boolean
   static List<bool> getDowState(String str) {
     List<bool> tmp = [];
     for (int i = 0; i <= 6; i++) {
@@ -37,6 +44,7 @@ class AlarmItem {
     return tmp;
   }
 
+  // Convert String time to DateTime With Today Date
   DateTime timeToDateTime() {
     DateTime now = DateTime.now();
     return DateTime(now.year, now.month, now.day,

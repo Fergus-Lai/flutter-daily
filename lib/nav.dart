@@ -1,3 +1,4 @@
+import 'package:android_daily/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class Nav extends StatefulWidget {
 class _NavState extends State<Nav> {
   FirebaseAuth auth = FirebaseAuth.instance;
   // Set Initial Route to Home
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
 
   // Create List Of Page
   List<Widget> _widgetOptions = <Widget>[
@@ -55,9 +56,9 @@ class _NavState extends State<Nav> {
             type: BottomNavigationBarType.fixed,
 
             // Style The Bottom Navigation Bar
-            backgroundColor: Colors.black,
-            selectedItemColor: Colors.purple[400],
-            unselectedItemColor: Colors.grey[400],
+            backgroundColor: backgroundColor,
+            selectedItemColor: activeButtonColor,
+            unselectedItemColor: inactiveColor,
 
             // Items Displayed In Bottom Navigation Bar
             items: <BottomNavigationBarItem>[

@@ -1,6 +1,9 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:android_daily/style.dart';
 
 // Create Formatter For Date And Hour To String
 final DateFormat dateFormatter = DateFormat('E d MMM yy');
@@ -32,39 +35,26 @@ class _HomeState extends State<Home> {
     Timer.periodic(Duration(seconds: 1), (timer) {
       updateTime();
     });
-    return Container(
-      color: Colors.black,
-      child: Column(children: <Widget>[
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: Column(children: <Widget>[
         // Place Holder
         Flexible(child: Container(), flex: 2),
         // Digital Clock Date
         Flexible(
             flex: 1,
             child: Container(
-                color: Colors.black,
-                alignment: Alignment.center,
-                child: Text(dateFormatter.format(now),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                    )))),
+                child: Text(dateFormatter.format(now), style: titleTextStyle))),
         // Digital Clock Time
         Flexible(
             flex: 1,
             child: Container(
-              color: Colors.black,
-              alignment: Alignment.center,
-              child: Text(hourFormatter.format(now),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  )),
+              child: Text(hourFormatter.format(now), style: titleTextStyle),
             )),
         // Schedule List
         Flexible(
             flex: 12,
             child: Container(
-              color: Colors.black,
               alignment: Alignment.center,
             ))
       ]),
