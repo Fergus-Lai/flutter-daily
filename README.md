@@ -53,6 +53,11 @@ Calendar:\
 TBD\
 Total: 0%\
 \
+Todo List:\
+\
+TBD\
+Total: 0%\
+\
 Change Log:\
 6th Commit 2021-6-26\
 Alarm Pages Done\

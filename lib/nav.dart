@@ -6,6 +6,7 @@ import 'account/account.dart';
 import 'home.dart';
 import 'alarm/alarm_home.dart';
 import 'calendar.dart';
+import 'todo/todo_home.dart';
 
 // Create Stateful Widget Nav For Bottom Navigation Bar
 class Nav extends StatefulWidget {
@@ -23,6 +24,7 @@ class _NavState extends State<Nav> {
 
   // Create List Of Page
   List<Widget> _widgetOptions = <Widget>[
+    ToDoHome(),
     AlarmHome(),
     Home(),
     Calendar(),
@@ -59,6 +61,8 @@ class _NavState extends State<Nav> {
 
             // Items Displayed In Bottom Navigation Bar
             items: <BottomNavigationBarItem>[
+              // Todo Item
+              BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todo'),
               // Alarm Item
               BottomNavigationBarItem(
                 icon: Icon(Icons.alarm),
