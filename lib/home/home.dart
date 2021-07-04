@@ -36,10 +36,11 @@ class _HomeState extends State<Home> {
       updateTime();
     });
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+      ),
       backgroundColor: backgroundColor,
       body: Column(children: <Widget>[
-        // Place Holder
-        Flexible(child: Container(), flex: 2),
         // Digital Clock Date
         Flexible(
             flex: 1,
