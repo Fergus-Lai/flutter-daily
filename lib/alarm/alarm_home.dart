@@ -105,9 +105,6 @@ class _AlarmHomeState extends State<AlarmHome> {
             );
           } else {
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: backgroundColor,
-              ),
               backgroundColor: backgroundColor,
               // Create ListView Of All The Item In Alarm List
               body: ListView.builder(
