@@ -219,13 +219,14 @@ class _AlarmChangeState extends State<AlarmChange> {
   // Build The Page
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: backgroundColor,
+        ),
         // Avoid Resize The Screen With Keyboard
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         body: Column(
           children: [
-            // Place Holder
-            Flexible(flex: 2, child: Container()),
             // Time Picker
             Flexible(
                 flex: 4,

@@ -95,6 +95,9 @@ class _AlarmHomeState extends State<AlarmHome> {
           if (alarmList.connectionState != ConnectionState.active) {
             print(alarmList.connectionState);
             return Scaffold(
+              appBar: AppBar(
+                backgroundColor: backgroundColor,
+              ),
               backgroundColor: backgroundColor,
               body: Center(
                 child: (Text(
@@ -105,6 +108,9 @@ class _AlarmHomeState extends State<AlarmHome> {
             );
           } else {
             return Scaffold(
+              appBar: AppBar(
+                backgroundColor: backgroundColor,
+              ),
               backgroundColor: backgroundColor,
               // Create ListView Of All The Item In Alarm List
               body: ListView.builder(

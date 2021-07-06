@@ -101,17 +101,15 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: backgroundColor,
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                // Place Holder
-                Flexible(
-                  flex: 1,
-                  child: Container(),
-                ),
                 // User Name Field
                 TextField(
                     controller: userNameController,
