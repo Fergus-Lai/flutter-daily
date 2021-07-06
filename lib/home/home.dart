@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 
 import 'package:android_daily/style.dart';

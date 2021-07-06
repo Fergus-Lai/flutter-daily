@@ -1,28 +1,23 @@
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 // Declaring DateFormatter With intl for dateformatting
 final DateFormat dateFormatter = DateFormat('HH:mm');
-// Declaring Uuid With Uuid For ID generation
-var uuid = Uuid();
 
 // Class For Storing Each Alarm
 class AlarmItem {
-  String id;
+  int id;
   String title;
   String time;
   List<bool> dowState;
   bool activate;
   AlarmItem(
-      {String? id,
+      {required this.id,
       this.title = 'Alarm',
       List<bool>? dowState,
       this.activate = true,
       String time = ""})
-      // If id is null, set id to uuid.v1()
-      : id = id ?? uuid.v1(),
-        // if dowState is null set dowState to a default list
-        dowState = dowState ?? [false, true, true, true, true, true, false],
+      // if dowState is null set dowState to a default list
+      : dowState = dowState ?? [false, true, true, true, true, true, false],
         // if time is empty set the current time to the time variable with formatter
         time = time == "" ? dateFormatter.format(DateTime.now()) : time;
 
@@ -58,11 +53,11 @@ class AlarmItem {
     int i = now.weekday;
     // Do While Loop For Checking The Closest Weekday Which The dowState Is True
     do {
-      i++;
       if (dowState[i % 7]) {
         tmp = tmp.add(Duration(days: (i - now.weekday)));
         return tmp.difference(now).inMinutes;
       }
+      i++;
     } while (i % 7 != now.weekday % 7);
     // The Time of tmp Is Faster Than now
     if ((tmp.hour >= now.hour) && (tmp.minute >= now.minute)) {

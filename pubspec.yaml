@@ -39,6 +39,9 @@ dependencies:
   # Adds uuid for id generation to application
   uuid: ^3.0.4
 
+  # Adds flutter_local_notification for notification to application
+  flutter_local_notifications: ^6.0.0
+
   # Adds flutter_slidable to application
   flutter_slidable: ^0.6.0
 

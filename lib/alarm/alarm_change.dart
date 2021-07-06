@@ -1,12 +1,19 @@
+import 'dart:typed_data';
+
 import 'package:android_daily/style.dart';
+
+import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:android_daily/alarm/alarm_item.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 // Create Time Formatter
 final timeForamtter = DateFormat("HH:mm");
 
@@ -123,7 +130,7 @@ class _AlarmChangeState extends State<AlarmChange> {
     }
   }
 
-// Handle Press On The Day Of Week Button
+  // Handle Press On The Day Of Week Button
   void dayOfWeekOnPressHandler(int dow) {
     setState(() {
       alarm.dowState[dow] = !alarm.dowState[dow];
@@ -200,11 +207,12 @@ class _AlarmChangeState extends State<AlarmChange> {
 
   // Handle Confirm Button Press
   void onConfirmPressHandler() async {
+    // Store To Firestore
     await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('alarm')
-        .doc(alarm.id)
+        .doc(alarm.id.toString())
         .set({
       'id': alarm.id,
       'title': titleController.text,
@@ -212,6 +220,55 @@ class _AlarmChangeState extends State<AlarmChange> {
       'dowState': alarm.dowStateToString(),
       'activate': alarm.activate ? '1' : '0',
     });
+    // Cancelling Alarm With The Same ID
+    flutterLocalNotificationsPlugin.cancel(alarm.id);
+    // Creating Alarm
+    const int insistentFlag = 4;
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'alarm',
+      'alarm',
+      'alarm channel',
+      importance: Importance.max,
+      priority: Priority.max,
+      showWhen: false,
+      additionalFlags: Int32List.fromList(<int>[insistentFlag]),
+    );
+    final NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    if (alarm.dowState.contains(true)) {
+      DateTime now = DateTime.now();
+      DateTime tmp = alarm.timeToDateTime();
+      int i = now.weekday;
+      do {
+        i++;
+        if (alarm.dowState[i % 7]) {
+          flutterLocalNotificationsPlugin.zonedSchedule(
+              alarm.id,
+              alarm.title,
+              "Tap To Dismiss",
+              tz.TZDateTime.from(
+                  tmp.add(Duration(days: i - now.weekday)), tz.local),
+              platformChannelSpecifics,
+              uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.absoluteTime,
+              androidAllowWhileIdle: true,
+              matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+        }
+      } while (i % 7 != now.weekday % 7);
+    } else {
+      flutterLocalNotificationsPlugin.zonedSchedule(
+          alarm.id,
+          alarm.title,
+          "Tap To Dismiss",
+          tz.TZDateTime.now(tz.local)
+              .add(Duration(seconds: (alarm.nextAlarmIn() * 60) + 1)),
+          platformChannelSpecifics,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          androidAllowWhileIdle: true,
+          payload: alarm.id.toString());
+    }
     Navigator.pop(context);
   }
 
