@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 
 import 'package:android_daily/style.dart';
+
+import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 // Create Formatter For Date And Hour To String
 final DateFormat dateFormatter = DateFormat('E d MMM yy');

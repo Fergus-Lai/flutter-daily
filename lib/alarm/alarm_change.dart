@@ -1,17 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:android_daily/style.dart';
+import 'package:android_daily/alarm/alarm_item.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:android_daily/alarm/alarm_item.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Create FlutterLocalNotifcationPlugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 // Create Time Formatter
@@ -223,12 +224,13 @@ class _AlarmChangeState extends State<AlarmChange> {
     // Cancelling Alarm With The Same ID
     flutterLocalNotificationsPlugin.cancel(alarm.id);
     // Creating Alarm
-    const int insistentFlag = 4;
+    const int insistentFlag = 4; // Flag For Repeat Until Clicked
+    // Android Notification Setting
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'alarm',
-      'alarm',
-      'alarm channel',
+      'alarm', // Channel ID
+      'alarm', // Channel Name
+      'alarm channel', // Channel Description
       importance: Importance.max,
       priority: Priority.max,
       showWhen: false,
@@ -253,7 +255,9 @@ class _AlarmChangeState extends State<AlarmChange> {
               uiLocalNotificationDateInterpretation:
                   UILocalNotificationDateInterpretation.absoluteTime,
               androidAllowWhileIdle: true,
-              matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+              matchDateTimeComponents: DateTimeComponents
+                  .dayOfWeekAndTime //Repeat At The Day Of Week And Time
+              );
         }
       } while (i % 7 != now.weekday % 7);
     } else {
@@ -269,6 +273,7 @@ class _AlarmChangeState extends State<AlarmChange> {
           androidAllowWhileIdle: true,
           payload: alarm.id.toString());
     }
+    // Go Back To Alarm Home
     Navigator.pop(context);
   }
 
@@ -276,14 +281,16 @@ class _AlarmChangeState extends State<AlarmChange> {
   // Build The Page
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: backgroundColor,
-        ),
         // Avoid Resize The Screen With Keyboard
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         body: Column(
           children: [
+            // Place Holder
+            Flexible(
+              flex: 1,
+              child: Container(),
+            ),
             // Time Picker
             Flexible(
                 flex: 4,

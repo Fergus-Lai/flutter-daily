@@ -1,8 +1,8 @@
+import 'package:android_daily/style.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-
-import 'package:android_daily/style.dart';
 
 class Account extends StatelessWidget {
   // Firebase Auth Instance
@@ -17,9 +17,6 @@ class Account extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-      ),
       backgroundColor: backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

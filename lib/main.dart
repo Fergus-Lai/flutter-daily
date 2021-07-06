@@ -14,6 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase App
   await Firebase.initializeApp();
+  // Initialize Timezone for Notification
   tz.initializeTimeZones();
   runApp(MyApp());
 }
@@ -84,6 +85,7 @@ class _MyAppState extends State<MyApp> {
         onSelectNotification: selectNotification);
   }
 
+  // When The Notification Is Clicked
   Future<void> selectNotification(String? payload) async {
     if (payload != null) {
       await FirebaseFirestore.instance

@@ -1,10 +1,10 @@
+import 'package:android_daily/style.dart';
+import 'package:android_daily/auth/sign_up.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-
-import 'package:android_daily/style.dart';
-import 'package:android_daily/auth/sign_up.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -59,15 +59,14 @@ class _SignUpState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: backgroundColor,
-        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
+                // Place Holder
+                Flexible(flex: 1, child: Container()),
                 // Email Text Field
                 TextField(
                     controller: emailController,
