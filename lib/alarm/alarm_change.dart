@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:android_daily/style.dart';
 import 'package:android_daily/alarm/alarm_item.dart';
 
+import 'package:uuid/uuid.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// Creat uuid
+var uuid = Uuid();
 // Create FlutterLocalNotifcationPlugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -228,16 +231,19 @@ class _AlarmChangeState extends State<AlarmChange> {
     // Android Notification Setting
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'alarm', // Channel ID
+      uuid.v1(), // Channel ID
       'alarm', // Channel Name
       'alarm channel', // Channel Description
       importance: Importance.max,
       priority: Priority.max,
       showWhen: false,
+      sound: RawResourceAndroidNotificationSound('alarm'),
       additionalFlags: Int32List.fromList(<int>[insistentFlag]),
     );
-    final NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    final IOSNotificationDetails iosNotificationDetails =
+        IOSNotificationDetails(presentAlert: true, presentSound: true);
+    final NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics, iOS: iosNotificationDetails);
     if (alarm.dowState.contains(true)) {
       DateTime now = DateTime.now();
       DateTime tmp = alarm.timeToDateTime();

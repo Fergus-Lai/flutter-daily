@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
-          badge: true,
+          badge: false,
           sound: true,
         );
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
