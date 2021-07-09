@@ -29,7 +29,7 @@ class _AlarmHomeState extends State<AlarmHome> {
         .snapshots();
     Stream<List<AlarmItem>> alarmList = collection.map((qShot) => qShot.docs
         .map((doc) => AlarmItem(
-            id: doc.get('id'),
+            id: int.parse(doc.get('id')),
             title: doc.get('title'),
             time: doc.get('time'),
             dowState: AlarmItem.getDowState(doc.get('dowState')),

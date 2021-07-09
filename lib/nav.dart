@@ -2,7 +2,7 @@ import 'package:android_daily/style.dart';
 import 'package:android_daily/account/account.dart';
 import 'package:android_daily/home/home.dart';
 import 'package:android_daily/alarm/alarm_home.dart';
-import 'package:android_daily/calendar/calendar.dart';
+import 'package:android_daily/calendar/calendar_home.dart';
 import 'package:android_daily/todo/todo_home.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +29,7 @@ class _NavState extends State<Nav> {
     ToDoHome(),
     AlarmHome(),
     Home(),
-    Calendar(),
+    CalendarHome(),
     Account(),
   ];
 
