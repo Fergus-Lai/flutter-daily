@@ -1,8 +1,9 @@
-import 'package:android_daily/auth/sign_in.dart';
+import 'package:android_daily/screens/authenticate/sign_in.dart';
+import 'package:android_daily/services/authenticaction_service.dart';
+import 'package:android_daily/services/database_service.dart';
 import 'package:android_daily/style.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -15,10 +16,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  // Instances For Firebase
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
   // Textt Editing Controller For Text Field
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -27,16 +24,12 @@ class _SignUpState extends State<SignUp> {
 
   // Variable To Show Error
   String userNameHelper = '';
-  bool userNameError = false;
 
   String emailHelper = '';
-  bool emailError = false;
 
   String passwordHelper = '';
-  bool passwordError = false;
 
   String validationHelper = '';
-  bool validationError = false;
 
   // On Press Handler For Sign In Clickable Text
   void onSignInPressHandler() {
@@ -47,53 +40,39 @@ class _SignUpState extends State<SignUp> {
   Future<void> onSignUpPressHandler() async {
     // Reseting All Error Variables
     setState(() {
-      validationError = false;
       validationHelper = '';
-      emailError = false;
       emailHelper = '';
-      passwordError = false;
       passwordHelper = '';
-      userNameError = false;
       userNameHelper = '';
     });
     // Password Entered At Password Field And Validation Field Is Not The Same
     if (validationController.text != passwordController.text) {
       setState(() {
-        validationError = true;
         validationHelper = 'Password Entered Are Not The Same';
-        passwordError = true;
       });
       // Username Too Long
     } else if (userNameController.text.length > 20) {
       setState(() {
-        userNameError = true;
         userNameHelper = 'User Name Too Long';
       });
     } else {
-      try {
-        // Create Account With The Email And Password
-        await auth.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
-        // Create Document in users collection
-        await db.collection('users').doc(auth.currentUser!.uid).set({
-          'Email': emailController.text,
-          'Name': userNameController.text,
+      String code = await context.read<AuthenticationService>().signUp(
+          email: emailController.text, password: passwordController.text);
+      // If Password Is Weak
+      if ((code == 'weak-password')) {
+        setState(() {
+          passwordHelper = 'Password Too Weak';
         });
+        // If Email Is Used
+      } else if (code == 'email-already-in-use') {
+        setState(() {
+          emailHelper = 'Account Already Exists';
+        });
+      } else if (code == 'Signed Up') {
+        await context
+            .read<DatabaseService>()
+            .register(emailController.text, userNameController.text);
         Navigator.pop(context);
-      } on FirebaseAuthException catch (e) {
-        // If Password Is Weak
-        if ((e.code == 'weak-password')) {
-          setState(() {
-            passwordError = true;
-            passwordHelper = 'Password Too Weak';
-          });
-          // If Email Is Used
-        } else if (e.code == 'email-already-in-use') {
-          setState(() {
-            emailHelper = 'Account Already Exists';
-            emailError = true;
-          });
-        }
       }
     }
   }
@@ -119,8 +98,8 @@ class _SignUpState extends State<SignUp> {
                     style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: helperColor(userNameError))),
+                            borderSide: BorderSide(
+                                color: helperColor(userNameHelper.isNotEmpty))),
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: activeTextColor)),
                         focusColor: activeTextColor,
@@ -128,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                         hintStyle: inactiveTextStyle,
                         helperText: userNameHelper,
                         helperStyle: TextStyle(
-                            color: helperColor(userNameError),
+                            color: helperColor(userNameHelper.isNotEmpty),
                             fontSize: helperSize),
                         icon: Icon(
                           Icons.person,
@@ -141,8 +120,8 @@ class _SignUpState extends State<SignUp> {
                     style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: helperColor(emailError))),
+                            borderSide: BorderSide(
+                                color: helperColor(emailHelper.isNotEmpty))),
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: activeTextColor)),
                         focusColor: activeTextColor,
@@ -150,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                         hintStyle: inactiveTextStyle,
                         helperText: emailHelper,
                         helperStyle: TextStyle(
-                            color: helperColor(emailError),
+                            color: helperColor(emailHelper.isNotEmpty),
                             fontSize: helperSize),
                         icon: Icon(
                           Icons.mail,
@@ -164,8 +143,8 @@ class _SignUpState extends State<SignUp> {
                   style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: helperColor(passwordError))),
+                          borderSide: BorderSide(
+                              color: helperColor(passwordHelper.isNotEmpty))),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: activeTextColor)),
                       focusColor: activeTextColor,
@@ -173,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                       hintStyle: inactiveTextStyle,
                       helperText: passwordHelper,
                       helperStyle: TextStyle(
-                          color: helperColor(passwordError),
+                          color: helperColor(passwordHelper.isNotEmpty),
                           fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,
@@ -188,8 +167,8 @@ class _SignUpState extends State<SignUp> {
                   style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: helperColor(validationError))),
+                          borderSide: BorderSide(
+                              color: helperColor(validationHelper.isNotEmpty))),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: activeTextColor)),
                       focusColor: activeTextColor,
@@ -197,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                       hintStyle: inactiveTextStyle,
                       helperText: validationHelper,
                       helperStyle: TextStyle(
-                          color: helperColor(validationError),
+                          color: helperColor(validationHelper.isNotEmpty),
                           fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,

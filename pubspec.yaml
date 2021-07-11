@@ -48,6 +48,8 @@ dependencies:
   # Adds syncfusion_flutter_calendar to application
   syncfusion_flutter_calendar: ^19.2.46
 
+  provider: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

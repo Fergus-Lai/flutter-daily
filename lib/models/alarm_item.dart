@@ -8,35 +8,34 @@ class AlarmItem {
   int id;
   String title;
   String time;
-  List<bool> dowState;
+  List<dynamic> dowState;
   bool activate;
   AlarmItem(
       {required this.id,
-      this.title = 'Alarm',
-      List<bool>? dowState,
-      this.activate = true,
-      String time = ""})
-      // if dowState is null set dowState to a default list
-      : dowState = dowState ?? [false, true, true, true, true, true, false],
-        // if time is empty set the current time to the time variable with formatter
-        time = time == "" ? dateFormatter.format(DateTime.now()) : time;
+      required this.title,
+      required this.time,
+      required this.dowState,
+      required this.activate});
 
-  // Convert List Of dowState To A String
-  String dowStateToString() {
-    String tmp = '';
-    for (int i = 0; i <= 6; i++) {
-      tmp += this.dowState[i] ? '1' : '0';
-    }
-    return tmp;
+  factory AlarmItem.fromMap(Map<String, dynamic> data) {
+    return AlarmItem(
+      id: data['id'],
+      title: data['title'] ?? 'Alarm',
+      time: data['time'] ?? dateFormatter.format(DateTime.now()),
+      dowState:
+          data['dowState'] ?? [false, true, true, true, true, true, false],
+      activate: data['activate'] ?? true,
+    );
   }
 
-  // Convert String To A List Of Boolean
-  static List<bool> getDowState(String str) {
-    List<bool> tmp = [];
-    for (int i = 0; i <= 6; i++) {
-      tmp.add(str[i] == '1' ? true : false);
-    }
-    return tmp;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'time': time,
+      'dowState': dowState,
+      'activate': activate,
+    };
   }
 
   // Convert String time to DateTime With Today Date

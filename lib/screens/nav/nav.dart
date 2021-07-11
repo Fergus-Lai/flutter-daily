@@ -1,9 +1,9 @@
 import 'package:android_daily/style.dart';
-import 'package:android_daily/account/account.dart';
-import 'package:android_daily/home/home.dart';
-import 'package:android_daily/alarm/alarm_home.dart';
-import 'package:android_daily/calendar/calendar_home.dart';
-import 'package:android_daily/todo/todo_home.dart';
+import 'package:android_daily/screens/nav/account/account.dart';
+import 'package:android_daily/screens/nav/home/home.dart';
+import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
+import 'package:android_daily/screens/nav/calendar/calendar_home.dart';
+import 'package:android_daily/screens/nav/todo/todo_home.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 

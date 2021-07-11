@@ -1,7 +1,8 @@
+import 'package:android_daily/services/authenticaction_service.dart';
 import 'package:android_daily/style.dart';
-import 'package:android_daily/auth/sign_up.dart';
+import 'package:android_daily/screens/authenticate/sign_up.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -20,10 +21,8 @@ class _SignUpState extends State<SignIn> {
 
   // Variable To Show Error
   String emailHelper = '';
-  bool emailError = false;
 
   String passwordHelper = '';
-  bool passwordError = false;
 
   // On Press Handler For Sign Up Clickable Text
   void onSignUpPressHandler() {
@@ -32,27 +31,23 @@ class _SignUpState extends State<SignIn> {
 
   // On Press Handler For Sign In Button
   Future<void> onSignInPressHandler() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-    } on FirebaseAuthException catch (e) {
-      // User Not Found
-      if (e.code == 'user-not-found') {
-        setState(() {
-          emailHelper = 'User Not Found';
-          emailError = true;
-          passwordHelper = '';
-          passwordError = false;
-        });
-        // Wrong Password
-      } else if (e.code == 'wrong-password') {
-        setState(() {
-          emailHelper = '';
-          emailError = false;
-          passwordHelper = 'Incorrect Password';
-          passwordError = true;
-        });
-      }
+    setState(() {
+      emailHelper = "";
+      passwordHelper = "";
+    });
+    String code = await context
+        .read<AuthenticationService>()
+        .signIn(email: emailController.text, password: passwordController.text);
+    // User Not Found
+    if (code == 'user-not-found') {
+      setState(() {
+        emailHelper = 'User Not Found';
+      });
+      // Wrong Password
+    } else if (code == 'wrong-password') {
+      setState(() {
+        passwordHelper = 'Incorrect Password';
+      });
     }
   }
 
@@ -74,8 +69,8 @@ class _SignUpState extends State<SignIn> {
                     style: activeTextStyle,
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: helperColor(emailError))),
+                            borderSide: BorderSide(
+                                color: helperColor(emailHelper.isNotEmpty))),
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: activeTextColor)),
                         focusColor: activeTextColor,
@@ -83,7 +78,7 @@ class _SignUpState extends State<SignIn> {
                         hintStyle: inactiveTextStyle,
                         helperText: emailHelper,
                         helperStyle: TextStyle(
-                            color: helperColor(emailError),
+                            color: helperColor(emailHelper.isNotEmpty),
                             fontSize: helperSize),
                         icon: Icon(
                           Icons.mail,
@@ -97,8 +92,8 @@ class _SignUpState extends State<SignIn> {
                   style: activeTextStyle,
                   decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: helperColor(passwordError))),
+                          borderSide: BorderSide(
+                              color: helperColor(passwordHelper.isNotEmpty))),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: activeTextColor)),
                       focusColor: activeTextColor,
@@ -106,7 +101,7 @@ class _SignUpState extends State<SignIn> {
                       hintStyle: inactiveTextStyle,
                       helperText: passwordHelper,
                       helperStyle: TextStyle(
-                          color: helperColor(passwordError),
+                          color: helperColor(passwordHelper.isNotEmpty),
                           fontSize: helperSize),
                       icon: Icon(
                         Icons.vpn_key,

@@ -1,16 +1,20 @@
+import 'package:android_daily/services/authenticaction_service.dart';
 import 'package:android_daily/style.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 
-class Account extends StatelessWidget {
-  // Firebase Auth Instance
-  final FirebaseAuth auth = FirebaseAuth.instance;
+class Account extends StatefulWidget {
+  const Account({Key? key}) : super(key: key);
 
-  // Sign Out Press Handler
+  @override
+  _AccountState createState() => _AccountState();
+}
+
+class _AccountState extends State<Account> {
   Future<void> onSignOutPressedHandler() async {
-    await auth.signOut();
+    await context.read<AuthenticationService>().signOut();
   }
 
   // Build

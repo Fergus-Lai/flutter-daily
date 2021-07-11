@@ -1,26 +1,31 @@
-import 'package:android_daily/auth/sign_in.dart';
-import 'package:android_daily/nav.dart';
+import 'package:android_daily/models/alarm_item.dart';
+import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
+import 'package:android_daily/screens/wrapper.dart';
+import 'package:android_daily/services/authenticaction_service.dart';
+import 'package:android_daily/services/database_service.dart';
+import 'package:android_daily/services/notification_init.dart';
+import 'package:android_daily/services/notification_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase App
   await Firebase.initializeApp();
+  // Initialize Flutter Local Notification
+  await NotificationInit().init();
   // Initialize Timezone for Notification
   tz.initializeTimeZones();
   runApp(MyApp());
 }
-
-// Firebase Auth Instance
-FirebaseAuth auth = FirebaseAuth.instance;
 
 // Main application Widget
 class MyApp extends StatefulWidget {
@@ -31,79 +36,35 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  // Initialize Widget App Used For Home
-  Widget app = auth.currentUser == null ? SignIn() : Nav();
-
-  // Listen To Auth State Change And Change Page According To User Value
-  void logInCheck() {
-    auth.authStateChanges().listen((User? user) {
-      if (user == null) {
-        setState(() {
-          app = SignIn();
-        });
-      } else {
-        setState(() {
-          app = Nav();
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize flutter_local_notification
-    final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-      onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) async {},
-    );
-
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
-
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: false,
-          sound: true,
-        );
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-  }
-
-  // When The Notification Is Clicked
-  Future<void> selectNotification(String? payload) async {
-    if (payload != null) {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('alarm')
-          .doc(payload)
-          .update({"activate": "0"});
-    }
-  }
-
   // Building The App
   @override
   Widget build(BuildContext context) {
-    logInCheck();
-    return MaterialApp(
-      title: 'Flutter Daily',
-      home: app,
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        Provider<DatabaseService>(
+          create: (_) => DatabaseService(
+              FirebaseAuth.instance, FirebaseFirestore.instance),
+        ),
+        Provider<NotificationService>(
+          create: (_) => NotificationService(FlutterLocalNotificationsPlugin()),
+        ),
+        StreamProvider<User?>(
+            create: (context) =>
+                context.read<AuthenticationService>().authStateChanges,
+            initialData: null),
+        StreamProvider<List<AlarmItem>?>(
+          create: (context) => context.read<DatabaseService>().streamAlarm(),
+          initialData: null,
+          child: AlarmHome(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Daily',
+        home: Wrapper(),
+      ),
     );
   }
 }

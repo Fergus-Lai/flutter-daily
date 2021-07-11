@@ -1,23 +1,14 @@
-import 'dart:typed_data';
-
+import 'package:android_daily/services/database_service.dart';
+import 'package:android_daily/services/notification_service.dart';
 import 'package:android_daily/style.dart';
-import 'package:android_daily/alarm/alarm_item.dart';
+import 'package:android_daily/models/alarm_item.dart';
 
-import 'package:uuid/uuid.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// Creat uuid
-var uuid = Uuid();
-// Create FlutterLocalNotifcationPlugin
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 // Create Time Formatter
 final timeForamtter = DateFormat("HH:mm");
 
@@ -142,7 +133,7 @@ class _AlarmChangeState extends State<AlarmChange> {
   }
 
 // Function For Generating Each Day Of Week Button
-  Widget dayOfWeekButtonGenerator(int dow, List<bool> dowState) {
+  Widget dayOfWeekButtonGenerator(int dow, List<dynamic> dowState) {
     String? text;
     switch (dow) {
       // Switch For Setting Display Word Of Day Of Week
@@ -211,74 +202,11 @@ class _AlarmChangeState extends State<AlarmChange> {
 
   // Handle Confirm Button Press
   void onConfirmPressHandler() async {
+    alarm.title = titleController.text;
     // Store To Firestore
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('alarm')
-        .doc(alarm.id.toString())
-        .set({
-      'id': alarm.id,
-      'title': titleController.text,
-      'time': alarm.time,
-      'dowState': alarm.dowStateToString(),
-      'activate': alarm.activate ? '1' : '0',
-    });
-    // Cancelling Alarm With The Same ID
-    flutterLocalNotificationsPlugin.cancel(alarm.id);
-    // Creating Alarm
-    const int insistentFlag = 4; // Flag For Repeat Until Clicked
-    // Android Notification Setting
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      uuid.v1(), // Channel ID
-      'alarm', // Channel Name
-      'alarm channel', // Channel Description
-      importance: Importance.max,
-      priority: Priority.max,
-      showWhen: false,
-      sound: RawResourceAndroidNotificationSound('alarm'),
-      additionalFlags: Int32List.fromList(<int>[insistentFlag]),
-    );
-    final IOSNotificationDetails iosNotificationDetails =
-        IOSNotificationDetails(presentAlert: true, presentSound: true);
-    final NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics, iOS: iosNotificationDetails);
-    if (alarm.dowState.contains(true)) {
-      DateTime now = DateTime.now();
-      DateTime tmp = alarm.timeToDateTime();
-      int i = now.weekday;
-      do {
-        i++;
-        if (alarm.dowState[i % 7]) {
-          flutterLocalNotificationsPlugin.zonedSchedule(
-              alarm.id,
-              alarm.title,
-              "Tap To Dismiss",
-              tz.TZDateTime.from(
-                  tmp.add(Duration(days: i - now.weekday)), tz.local),
-              platformChannelSpecifics,
-              uiLocalNotificationDateInterpretation:
-                  UILocalNotificationDateInterpretation.absoluteTime,
-              androidAllowWhileIdle: true,
-              matchDateTimeComponents: DateTimeComponents
-                  .dayOfWeekAndTime //Repeat At The Day Of Week And Time
-              );
-        }
-      } while (i % 7 != now.weekday % 7);
-    } else {
-      flutterLocalNotificationsPlugin.zonedSchedule(
-          alarm.id,
-          alarm.title,
-          "Tap To Dismiss",
-          tz.TZDateTime.now(tz.local)
-              .add(Duration(seconds: (alarm.nextAlarmIn() * 60) + 1)),
-          platformChannelSpecifics,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
-          androidAllowWhileIdle: true,
-          payload: alarm.id.toString());
-    }
+    context.read<DatabaseService>().updateAlarm(alarm);
+    // Setting Notification
+    context.read<NotificationService>().setAlarmNotification(alarm);
     // Go Back To Alarm Home
     Navigator.pop(context);
   }

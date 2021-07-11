@@ -1,5 +1,5 @@
 import 'package:android_daily/style.dart';
-import 'package:android_daily/calendar/calendar_item.dart';
+import 'package:android_daily/models/calendar_item.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
