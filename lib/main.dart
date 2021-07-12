@@ -1,5 +1,6 @@
 import 'package:android_daily/models/alarm_item.dart';
 import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
+import 'package:android_daily/screens/nav/calendar/calendar_home.dart';
 import 'package:android_daily/screens/wrapper.dart';
 import 'package:android_daily/services/authenticaction_service.dart';
 import 'package:android_daily/services/database_service.dart';
@@ -60,6 +61,11 @@ class _MyAppState extends State<MyApp> {
           initialData: null,
           child: AlarmHome(),
         ),
+        StreamProvider(
+          create: (context) => context.read<DatabaseService>().streamSchedule(),
+          initialData: null,
+          child: CalendarHome(),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Daily',

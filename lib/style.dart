@@ -14,6 +14,40 @@ Color helperColor(bool x) {
   return inactiveColor;
 }
 
+List<Color> scheduleColor = [
+  Color(0xFFE91E63),
+  Color(0xFFC2185B),
+  Color(0xFF880E4F),
+  Color(0xFFF44336),
+  Color(0xFFD32F2F),
+  Color(0xFFB71C1C),
+  Color(0xFFFF5722),
+  Color(0xFFE64A19),
+  Color(0xFFBF360C),
+  Color(0xFFFFB74D),
+  Color(0xFFFF9800),
+  Color(0xFFF57C00),
+  Color(0xFFFFF176),
+  Color(0xFFFFEB3B),
+  Color(0xFFFBC02D),
+  Color(0xFF81C784),
+  Color(0xFF4CAF50),
+  Color(0xFF388E3C),
+  Color(0xFF4DB6AC),
+  Color(0xFF26A96A),
+  Color(0xFF00796B),
+  Color(0xFF4DD0E1),
+  Color(0xFF00BCD4),
+  Color(0xFF0097A7),
+  Color(0xFF64B5F6),
+  Color(0xFF2196F3),
+  Color(0xFF1976D2),
+  Color(0xFFBA68C8),
+  Color(0xFF9C27B0),
+  Color(0xFF7B1FA2),
+  Color(0xFF4A148C),
+];
+
 const double helperSize = 15;
 const double titleSize = 30;
 

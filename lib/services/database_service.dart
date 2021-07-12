@@ -1,4 +1,5 @@
 import 'package:android_daily/models/alarm_item.dart';
+import 'package:android_daily/models/schedule_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -59,5 +60,19 @@ class DatabaseService {
         .collection('alarm')
         .doc(alarm.id.toString())
         .set(alarm.toJson());
+  }
+
+  Stream<List<ScheduleItem>>? streamSchedule() {
+    if (_auth.currentUser != null) {
+      return _db
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('alarm')
+          .snapshots()
+          .map((list) => list.docs
+              .map((doc) => ScheduleItem.fromMap(doc.data()))
+              .toList());
+    }
+    return null;
   }
 }

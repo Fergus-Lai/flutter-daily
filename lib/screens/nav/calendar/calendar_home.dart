@@ -1,5 +1,7 @@
+import 'package:android_daily/models/schedule_data_source.dart';
 import 'package:android_daily/style.dart';
-import 'package:android_daily/models/calendar_item.dart';
+import 'package:android_daily/models/schedule_item.dart';
+import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,35 +68,45 @@ class _CalendarHomeState extends State<CalendarHome> {
           ),
           Flexible(
             flex: 12,
-            child: SfCalendar(
-              cellBorderColor: inactiveColor,
-              controller: calendarController,
-              view: CalendarView.schedule,
-              allowedViews: [],
-              viewHeaderStyle: ViewHeaderStyle(dayTextStyle: inactiveTextStyle),
-              todayTextStyle: activeTextStyle,
-              todayHighlightColor: activeButtonColor,
-              backgroundColor: backgroundColor,
-              headerStyle: CalendarHeaderStyle(textStyle: titleTextStyle),
-              scheduleViewSettings: ScheduleViewSettings(
-                hideEmptyScheduleWeek: true,
-              ),
-              monthViewSettings: MonthViewSettings(
-                appointmentDisplayCount: 2,
-                appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
-                showTrailingAndLeadingDates: true,
-                showAgenda: true,
-                agendaStyle: AgendaStyle(
-                    appointmentTextStyle: activeTextStyle,
-                    dayTextStyle: activeTextStyle,
-                    dateTextStyle: activeTextStyle),
-                monthCellStyle: MonthCellStyle(
-                  textStyle: activeTextStyle,
-                  trailingDatesTextStyle: inactiveTextStyle,
-                  leadingDatesTextStyle: inactiveTextStyle,
-                ),
-              ),
-            ),
+            child: Consumer<List<ScheduleItem>?>(
+                builder: (context, List<ScheduleItem>? scheduleList, child) {
+              if (scheduleList == null) {
+                return CircularProgressIndicator(color: activeButtonColor);
+              } else {
+                return SfCalendar(
+                  dataSource: ScheduleDataSource(scheduleList),
+                  cellBorderColor: inactiveColor,
+                  controller: calendarController,
+                  view: CalendarView.schedule,
+                  allowedViews: [],
+                  viewHeaderStyle:
+                      ViewHeaderStyle(dayTextStyle: inactiveTextStyle),
+                  todayTextStyle: activeTextStyle,
+                  todayHighlightColor: activeButtonColor,
+                  backgroundColor: backgroundColor,
+                  headerStyle: CalendarHeaderStyle(textStyle: titleTextStyle),
+                  scheduleViewSettings: ScheduleViewSettings(
+                    hideEmptyScheduleWeek: true,
+                  ),
+                  monthViewSettings: MonthViewSettings(
+                    appointmentDisplayCount: 2,
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.indicator,
+                    showTrailingAndLeadingDates: true,
+                    showAgenda: true,
+                    agendaStyle: AgendaStyle(
+                        appointmentTextStyle: activeTextStyle,
+                        dayTextStyle: activeTextStyle,
+                        dateTextStyle: activeTextStyle),
+                    monthCellStyle: MonthCellStyle(
+                      textStyle: activeTextStyle,
+                      trailingDatesTextStyle: inactiveTextStyle,
+                      leadingDatesTextStyle: inactiveTextStyle,
+                    ),
+                  ),
+                );
+              }
+            }),
           ),
         ],
       ),
