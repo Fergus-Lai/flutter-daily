@@ -6,6 +6,7 @@ import 'package:android_daily/services/authenticaction_service.dart';
 import 'package:android_daily/services/database_service.dart';
 import 'package:android_daily/services/notification_init.dart';
 import 'package:android_daily/services/notification_service.dart';
+import 'package:android_daily/style.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:provider/provider.dart';
@@ -68,6 +69,9 @@ class _MyAppState extends State<MyApp> {
         )
       ],
       child: MaterialApp(
+        theme: ThemeData(
+            dialogBackgroundColor: dialogColor,
+            unselectedWidgetColor: inactiveColor),
         title: 'Flutter Daily',
         home: Wrapper(),
       ),

@@ -7,6 +7,7 @@ const Color inactiveColor = Color(0xFF757575);
 const Color warningColor = Color(0xFFB71C1C);
 const Color safeColor = Color(0xFF1B5E20);
 const Color editColor = Color(0xFF01579B);
+const Color dialogColor = Color(0xFF424242);
 Color helperColor(bool x) {
   if (x) {
     return warningColor;
@@ -45,18 +46,18 @@ List<Color> scheduleColor = [
   Color(0xFFBA68C8),
   Color(0xFF9C27B0),
   Color(0xFF7B1FA2),
-  Color(0xFF4A148C),
 ];
 
 const double helperSize = 15;
+const double textSize = 20;
 const double titleSize = 30;
 
 const TextStyle titleTextStyle =
     TextStyle(color: activeTextColor, fontSize: titleSize);
 const TextStyle activeTextStyle =
-    TextStyle(color: activeTextColor, fontSize: 20);
+    TextStyle(color: activeTextColor, fontSize: textSize);
 const TextStyle inactiveTextStyle =
-    TextStyle(color: inactiveColor, fontSize: 20);
+    TextStyle(color: inactiveColor, fontSize: textSize);
 
 Widget roundedSquareButton(void Function() onPressHandler, String text) {
   return SizedBox(
@@ -77,7 +78,7 @@ Widget roundedSquareButton(void Function() onPressHandler, String text) {
 
 Widget divider() {
   return Divider(
-    color: activeTextColor,
+    color: inactiveColor,
     height: 5,
     thickness: 2,
   );

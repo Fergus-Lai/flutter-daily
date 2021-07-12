@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:android_daily/models/alarm_item.dart';
+import 'package:android_daily/models/schedule_item.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -74,5 +75,25 @@ class NotificationService {
 
   Future<void> cancelAlarm(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  Future<void> setScheduleNotification(ScheduleItem schedule) async {
+    // Cancelling Alarm With The Same ID
+    _flutterLocalNotificationsPlugin.cancel(schedule.id);
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      uuid.v1(), // Channel ID
+      'schedule', // Channel Name
+      'schedule channel', // Channel Description
+      importance: Importance.max,
+      priority: Priority.max,
+      showWhen: true,
+    );
+    final IOSNotificationDetails iosNotificationDetails =
+        IOSNotificationDetails(presentAlert: true, presentSound: true);
+    final NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics, iOS: iosNotificationDetails);
+    switch (schedule.recurrenceRule) {
+    }
   }
 }

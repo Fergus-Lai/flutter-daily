@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:android_daily/style.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 
@@ -58,5 +57,40 @@ class ScheduleItem {
       'background': background.value,
       'recurrenceRule': recurrenceRule,
     };
+  }
+
+  String recurrenceRuleToString() {
+    switch (recurrenceRule) {
+      case "FREQ=DAILY;INTERVAL=1":
+        return "Every Day";
+      case "FREQ=WEEKLY;INTERVAL=1":
+        return "Every Week";
+      case "FREQ=MONTHLY;INTERVAL=1":
+        return "Every Month";
+      case "FREQ=YEARLY;INTERVAL=1":
+        return "Every Year";
+      default:
+        return "Does Not Repeat";
+    }
+  }
+
+  void toRecurrencRule(String recurrence) {
+    switch (recurrence) {
+      case "Does Not Repeat":
+        recurrenceRule = "";
+        break;
+      case "Every Day":
+        recurrenceRule = "FREQ=DAILY;INTERVAL=1";
+        break;
+      case "Every Week":
+        recurrenceRule = "FREQ=WEEKLY;INTERVAL=1";
+        break;
+      case "Every Month":
+        recurrenceRule = "FREQ=MONTHLY;INTERVAL=1";
+        break;
+      case "Every Year":
+        recurrenceRule = "FREQ=YEARLY;INTERVAL=1";
+        break;
+    }
   }
 }

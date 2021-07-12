@@ -75,4 +75,13 @@ class DatabaseService {
     }
     return null;
   }
+
+  Future<void> updateSchedule(ScheduleItem schedule) async {
+    await _db
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .collection('alarm')
+        .doc(schedule.id.toString())
+        .set(schedule.toJson());
+  }
 }
