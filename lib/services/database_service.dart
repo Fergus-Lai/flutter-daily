@@ -67,7 +67,7 @@ class DatabaseService {
       return _db
           .collection('users')
           .doc(_auth.currentUser!.uid)
-          .collection('alarm')
+          .collection('schedule')
           .snapshots()
           .map((list) => list.docs
               .map((doc) => ScheduleItem.fromMap(doc.data()))
@@ -80,8 +80,17 @@ class DatabaseService {
     await _db
         .collection('users')
         .doc(_auth.currentUser!.uid)
-        .collection('alarm')
+        .collection('schedule')
         .doc(schedule.id.toString())
         .set(schedule.toJson());
+  }
+
+  Future<void> deleteSchedule(ScheduleItem schedule) async {
+    await _db
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .collection('schedule')
+        .doc(schedule.id.toString())
+        .delete();
   }
 }

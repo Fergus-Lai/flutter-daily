@@ -1,5 +1,6 @@
 import 'package:android_daily/models/schedule_data_source.dart';
 import 'package:android_daily/screens/nav/calendar/calendar_change.dart';
+import 'package:android_daily/services/database_service.dart';
 import 'package:android_daily/style.dart';
 import 'package:android_daily/models/schedule_item.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,56 @@ class _CalendarHomeState extends State<CalendarHome> {
         ));
   }
 
+  void calendarTap(CalendarTapDetails calendarTapDetails) {
+    if (calendarTapDetails.appointments!.length == 1) {
+      Navigator.push(
+        // Navigate To AlarmChange Page
+        context,
+        MaterialPageRoute(
+          builder: (context) => CalendarChange(
+            passedSchedule: calendarTapDetails.appointments![0],
+          ),
+        ),
+      );
+    }
+  }
+
+  void onLongTap(CalendarLongPressDetails calendarTapDetails) {
+    if (calendarTapDetails.appointments!.length == 1) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                "Delete Appointment?",
+                style: activeTextStyle,
+              ),
+              actions: [
+                TextButton(
+                  child: Text(
+                    "Cancel",
+                    style: activeTextStyle,
+                  ),
+                  onPressed: () => {Navigator.pop(context)},
+                ),
+                TextButton(
+                  child: Text(
+                    "Confirm",
+                    style: activeTextStyle,
+                  ),
+                  onPressed: () {
+                    context
+                        .read<DatabaseService>()
+                        .deleteSchedule(calendarTapDetails.appointments![0]);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<List<ScheduleItem>?>(
@@ -98,6 +149,8 @@ class _CalendarHomeState extends State<CalendarHome> {
                 Flexible(
                   flex: 12,
                   child: SfCalendar(
+                    onTap: calendarTap,
+                    onLongPress: onLongTap,
                     dataSource: ScheduleDataSource(scheduleList),
                     cellBorderColor: inactiveColor,
                     controller: calendarController,
@@ -110,8 +163,13 @@ class _CalendarHomeState extends State<CalendarHome> {
                     backgroundColor: backgroundColor,
                     headerStyle: CalendarHeaderStyle(textStyle: titleTextStyle),
                     scheduleViewSettings: ScheduleViewSettings(
-                      hideEmptyScheduleWeek: true,
-                    ),
+                        hideEmptyScheduleWeek: true,
+                        appointmentItemHeight: 70,
+                        appointmentTextStyle: activeTextStyle,
+                        dayHeaderSettings: DayHeaderSettings(
+                            dayTextStyle: TextStyle(
+                                color: activeTextColor, fontSize: helperSize),
+                            dateTextStyle: activeTextStyle)),
                     monthViewSettings: MonthViewSettings(
                       appointmentDisplayCount: 2,
                       appointmentDisplayMode:

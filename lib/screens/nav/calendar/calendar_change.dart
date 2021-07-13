@@ -1,7 +1,9 @@
 import 'package:android_daily/models/schedule_item.dart';
+import 'package:android_daily/services/database_service.dart';
 import 'package:android_daily/style.dart';
 
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,10 @@ class _CalendarChangeState extends State<CalendarChange> {
   void allDaySwitchHandler(bool value) {
     setState(() {
       scheduleItem.allDay = value;
+      scheduleItem.startTime = DateTime(scheduleItem.startTime.year,
+          scheduleItem.startTime.month, scheduleItem.startTime.day, 0, 0);
+      scheduleItem.endTime = DateTime(scheduleItem.endTime.year,
+          scheduleItem.endTime.month, scheduleItem.endTime.day, 0, 0);
     });
   }
 
@@ -95,7 +101,7 @@ class _CalendarChangeState extends State<CalendarChange> {
           "Every Day",
           "Every Week",
           "Every Month",
-          "Every Year"
+          "Every Year",
         ];
         return AlertDialog(
           content: Container(
@@ -174,7 +180,14 @@ class _CalendarChangeState extends State<CalendarChange> {
     Navigator.pop(context);
   }
 
-  void onConfirmPressHandler() {}
+  void onConfirmPressHandler() {
+    // Setting Title To Title Controller Text
+    scheduleItem.title = titleController.text;
+    // Storing To Firebase
+    context.read<DatabaseService>().updateSchedule(scheduleItem);
+    // Pop Back To Calendar Home
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {

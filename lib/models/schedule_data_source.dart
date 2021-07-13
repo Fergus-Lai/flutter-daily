@@ -11,12 +11,12 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   DateTime getStartTime(int index) {
-    return appointments![index].from;
+    return appointments![index].startTime;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments![index].to;
+    return appointments![index].endTime;
   }
 
   @override
@@ -26,12 +26,12 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   String getEndTimeZone(int index) {
-    return appointments![index].toZone;
+    return "";
   }
 
   @override
   List<DateTime> getRecurrenceExceptionDates(int index) {
-    return appointments![index].exceptionDates;
+    return [];
   }
 
   @override
@@ -41,7 +41,7 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   String getStartTimeZone(int index) {
-    return appointments![index].fromZone;
+    return "";
   }
 
   @override
@@ -51,6 +51,6 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   bool isAllDay(int index) {
-    return appointments![index].isAllDay;
+    return appointments![index].allDay;
   }
 }

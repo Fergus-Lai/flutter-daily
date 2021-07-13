@@ -33,13 +33,12 @@ class ScheduleItem {
         id: data['id'],
         startTime: data['startTime'] == null
             ? DateTime.now().add(Duration(days: 1))
-            : DateTime.fromMillisecondsSinceEpoch(data['startTime'] * 1000),
+            : data['startTime'].toDate(),
         endTime: data['endTime'] == null
             ? data['startTime'] == null
                 ? DateTime.now().add(Duration(days: 1, hours: 1))
-                : DateTime.fromMillisecondsSinceEpoch(data['startTime'] * 1000)
-                    .add(Duration(hours: 1))
-            : DateTime.fromMillisecondsSinceEpoch(data['endTime'] * 1000),
+                : data['startTime'].toDate().add(Duration(hours: 1))
+            : data['endTime'].toDate(),
         title: data['title'] ?? '',
         allDay: data['allDay'] ?? false,
         background: data['background'] == null
