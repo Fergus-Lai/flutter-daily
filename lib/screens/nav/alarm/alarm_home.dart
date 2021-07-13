@@ -45,6 +45,11 @@ class _AlarmHomeState extends State<AlarmHome> {
   // On Press Handler For Disable Button
   void changeStateHandler(AlarmItem alarm) {
     context.read<DatabaseService>().changeAlarmState(alarm);
+    if (alarm.activate) {
+      context.read<NotificationService>().cancelAlarm(alarm.id);
+    } else {
+      context.read<NotificationService>().setAlarmNotification(alarm);
+    }
   }
 
   // On Press Handler For Edit Button
