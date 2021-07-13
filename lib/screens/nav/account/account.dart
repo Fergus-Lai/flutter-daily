@@ -1,5 +1,5 @@
-import 'package:android_daily/services/authenticaction_service.dart';
-import 'package:android_daily/style.dart';
+import 'package:penguin/services/authenticaction_service.dart';
+import 'package:penguin/style.dart';
 
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
-import 'package:android_daily/models/schedule_data_source.dart';
-import 'package:android_daily/screens/nav/calendar/calendar_change.dart';
-import 'package:android_daily/services/database_service.dart';
-import 'package:android_daily/style.dart';
-import 'package:android_daily/models/schedule_item.dart';
+import 'package:penguin/models/schedule_data_source.dart';
+import 'package:penguin/screens/nav/calendar/calendar_change.dart';
+import 'package:penguin/services/database_service.dart';
+import 'package:penguin/style.dart';
+import 'package:penguin/models/schedule_item.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';

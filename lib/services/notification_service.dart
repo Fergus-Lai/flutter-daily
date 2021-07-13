@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:android_daily/models/alarm_item.dart';
+import 'package:penguin/models/alarm_item.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:timezone/timezone.dart' as tz;

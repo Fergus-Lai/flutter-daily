@@ -1,6 +1,6 @@
-import 'package:android_daily/models/schedule_item.dart';
-import 'package:android_daily/services/database_service.dart';
-import 'package:android_daily/style.dart';
+import 'package:penguin/models/schedule_item.dart';
+import 'package:penguin/services/database_service.dart';
+import 'package:penguin/style.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

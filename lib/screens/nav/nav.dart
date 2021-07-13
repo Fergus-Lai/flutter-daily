@@ -1,8 +1,8 @@
-import 'package:android_daily/style.dart';
-import 'package:android_daily/screens/nav/account/account.dart';
-import 'package:android_daily/screens/nav/home/home.dart';
-import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
-import 'package:android_daily/screens/nav/calendar/calendar_home.dart';
+import 'package:penguin/style.dart';
+import 'package:penguin/screens/nav/account/account.dart';
+import 'package:penguin/screens/nav/home/home.dart';
+import 'package:penguin/screens/nav/alarm/alarm_home.dart';
+import 'package:penguin/screens/nav/calendar/calendar_home.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,7 +21,7 @@ class Nav extends StatefulWidget {
 class _NavState extends State<Nav> {
   FirebaseAuth auth = FirebaseAuth.instance;
   // Set Initial Route to Home
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
   // Create List Of Page
   List<Widget> _widgetOptions = <Widget>[

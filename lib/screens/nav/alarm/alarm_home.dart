@@ -1,8 +1,8 @@
-import 'package:android_daily/services/database_service.dart';
-import 'package:android_daily/services/notification_service.dart';
-import 'package:android_daily/style.dart';
-import 'package:android_daily/screens/nav/alarm/alarm_change.dart';
-import 'package:android_daily/models/alarm_item.dart';
+import 'package:penguin/services/database_service.dart';
+import 'package:penguin/services/notification_service.dart';
+import 'package:penguin/style.dart';
+import 'package:penguin/screens/nav/alarm/alarm_change.dart';
+import 'package:penguin/models/alarm_item.dart';
 
 import 'package:provider/provider.dart';
 

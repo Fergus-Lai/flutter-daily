@@ -1,4 +1,4 @@
-import 'package:android_daily/models/schedule_item.dart';
+import 'package:penguin/models/schedule_item.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

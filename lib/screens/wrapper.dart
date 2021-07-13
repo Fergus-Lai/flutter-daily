@@ -1,5 +1,5 @@
-import 'package:android_daily/screens/authenticate/sign_in.dart';
-import 'package:android_daily/screens/nav/nav.dart';
+import 'package:penguin/screens/authenticate/sign_in.dart';
+import 'package:penguin/screens/nav/nav.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

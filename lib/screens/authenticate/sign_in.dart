@@ -1,6 +1,6 @@
-import 'package:android_daily/services/authenticaction_service.dart';
-import 'package:android_daily/style.dart';
-import 'package:android_daily/screens/authenticate/sign_up.dart';
+import 'package:penguin/services/authenticaction_service.dart';
+import 'package:penguin/style.dart';
+import 'package:penguin/screens/authenticate/sign_up.dart';
 
 import 'package:provider/provider.dart';
 

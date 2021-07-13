@@ -1,12 +1,12 @@
-import 'package:android_daily/models/alarm_item.dart';
-import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
-import 'package:android_daily/screens/nav/calendar/calendar_home.dart';
-import 'package:android_daily/screens/wrapper.dart';
-import 'package:android_daily/services/authenticaction_service.dart';
-import 'package:android_daily/services/database_service.dart';
-import 'package:android_daily/services/notification_init.dart';
-import 'package:android_daily/services/notification_service.dart';
-import 'package:android_daily/style.dart';
+import 'package:penguin/models/alarm_item.dart';
+import 'package:penguin/screens/nav/alarm/alarm_home.dart';
+import 'package:penguin/screens/nav/calendar/calendar_home.dart';
+import 'package:penguin/screens/wrapper.dart';
+import 'package:penguin/services/authenticaction_service.dart';
+import 'package:penguin/services/database_service.dart';
+import 'package:penguin/services/notification_init.dart';
+import 'package:penguin/services/notification_service.dart';
+import 'package:penguin/style.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:provider/provider.dart';

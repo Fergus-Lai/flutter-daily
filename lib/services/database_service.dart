@@ -1,5 +1,6 @@
-import 'package:android_daily/models/alarm_item.dart';
-import 'package:android_daily/models/schedule_item.dart';
+import 'package:penguin/models/alarm_item.dart';
+import 'package:penguin/models/schedule_item.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
