@@ -3,7 +3,6 @@ import 'package:android_daily/screens/nav/account/account.dart';
 import 'package:android_daily/screens/nav/home/home.dart';
 import 'package:android_daily/screens/nav/alarm/alarm_home.dart';
 import 'package:android_daily/screens/nav/calendar/calendar_home.dart';
-import 'package:android_daily/screens/nav/todo/todo_home.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,7 +25,6 @@ class _NavState extends State<Nav> {
 
   // Create List Of Page
   List<Widget> _widgetOptions = <Widget>[
-    ToDoHome(),
     AlarmHome(),
     Home(),
     CalendarHome(),
@@ -63,8 +61,6 @@ class _NavState extends State<Nav> {
 
             // Items Displayed In Bottom Navigation Bar
             items: <BottomNavigationBarItem>[
-              // Todo Item
-              BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todo'),
               // Alarm Item
               BottomNavigationBarItem(
                 icon: Icon(Icons.alarm),

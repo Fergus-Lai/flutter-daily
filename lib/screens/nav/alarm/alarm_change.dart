@@ -189,7 +189,7 @@ class _AlarmChangeState extends State<AlarmChange> {
   }
 
   // Handle Scrolling Action For Time Picking
-  void onTimeChangeManager(DateTime time, timeFormatter) {
+  void onTimeChangeHandler(DateTime time, timeFormatter) {
     setState(() {
       alarm.time = timeFormatter.format(time);
     });
@@ -240,7 +240,7 @@ class _AlarmChangeState extends State<AlarmChange> {
                     use24hFormat: true,
                     minuteInterval: 1,
                     onDateTimeChanged: (time) =>
-                        {onTimeChangeManager(time, timeForamtter)},
+                        {onTimeChangeHandler(time, timeForamtter)},
                   ),
                 )),
             // Place Holder

@@ -33,7 +33,8 @@ class _CalendarChangeState extends State<CalendarChange> {
     super.initState();
   }
 
-  void allDaySwitchHandler(bool value) {
+  // Handle All Day Switch
+  void onAllDaySwitchHandler(bool value) {
     setState(() {
       scheduleItem.allDay = value;
       scheduleItem.startTime = DateTime(scheduleItem.startTime.year,
@@ -43,6 +44,7 @@ class _CalendarChangeState extends State<CalendarChange> {
     });
   }
 
+  // Handle Time Text Press
   Future<void> onTimePressHandler(String mode) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -69,6 +71,7 @@ class _CalendarChangeState extends State<CalendarChange> {
     }
   }
 
+  // Handle Date Text Press
   Future<void> onDatePressHandler(String mode) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -91,6 +94,7 @@ class _CalendarChangeState extends State<CalendarChange> {
     }
   }
 
+  // Handle Repeat Row Press
   void onRepeatPressHandler() {
     showDialog(
       context: context,
@@ -135,6 +139,7 @@ class _CalendarChangeState extends State<CalendarChange> {
     );
   }
 
+  // Handle Color Row Press
   void onColorPressHandler() {
     showDialog(
         context: context,
@@ -176,10 +181,12 @@ class _CalendarChangeState extends State<CalendarChange> {
         });
   }
 
+  // Handle Cancel Button Press
   void onCancelPressHandler() {
     Navigator.pop(context);
   }
 
+  // Handle Confirm Button Press
   void onConfirmPressHandler() {
     // Setting Title To Title Controller Text
     scheduleItem.title = titleController.text;
@@ -201,6 +208,7 @@ class _CalendarChangeState extends State<CalendarChange> {
             flex: 2,
             child: Container(),
           ),
+          // Title Text Field
           Flexible(
             flex: 2,
             child: Padding(
@@ -222,6 +230,7 @@ class _CalendarChangeState extends State<CalendarChange> {
             ),
           ),
           divider(),
+          // All Day Row
           Expanded(
             flex: 2,
             child: Padding(
@@ -232,13 +241,16 @@ class _CalendarChangeState extends State<CalendarChange> {
                 children: [
                   RichText(
                     text: TextSpan(
+                      // All Day Text And Icon
                       children: [
+                        // Icon
                         WidgetSpan(
                           child: Icon(
                             Icons.schedule,
                             color: activeTextColor,
                           ),
                         ),
+                        // Text
                         WidgetSpan(
                           child: Padding(
                             padding: EdgeInsets.only(left: 16),
@@ -251,13 +263,14 @@ class _CalendarChangeState extends State<CalendarChange> {
                       ],
                     ),
                   ),
+                  // All Day Switch
                   Padding(
                     padding: EdgeInsets.only(right: 25),
                     child: Transform.scale(
                       scale: 0.85,
                       child: CupertinoSwitch(
                         value: scheduleItem.allDay,
-                        onChanged: allDaySwitchHandler,
+                        onChanged: onAllDaySwitchHandler,
                         activeColor: activeButtonColor,
                         trackColor: inactiveColor,
                       ),
@@ -267,6 +280,7 @@ class _CalendarChangeState extends State<CalendarChange> {
               ),
             ),
           ),
+          // Start Time Row
           Expanded(
             flex: 2,
             child: Padding(
@@ -299,6 +313,7 @@ class _CalendarChangeState extends State<CalendarChange> {
               ),
             ),
           ),
+          // End Time Row
           Expanded(
             flex: 2,
             child: Padding(
@@ -331,6 +346,7 @@ class _CalendarChangeState extends State<CalendarChange> {
               ),
             ),
           ),
+          // Recurrence Rule Row
           Expanded(
             flex: 2,
             child: Padding(
@@ -359,6 +375,7 @@ class _CalendarChangeState extends State<CalendarChange> {
             ),
           ),
           divider(),
+          // Color Row
           Expanded(
             flex: 2,
             child: InkWell(
@@ -389,6 +406,7 @@ class _CalendarChangeState extends State<CalendarChange> {
             ),
           ),
           divider(),
+          // Delete And Confirm Button Row
           Flexible(
               flex: 2,
               child: Row(

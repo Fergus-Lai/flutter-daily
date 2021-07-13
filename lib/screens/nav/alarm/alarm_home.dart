@@ -19,6 +19,7 @@ class AlarmHome extends StatefulWidget {
 
 /// Private State Class For Stateful Widget AlarmHome Page
 class _AlarmHomeState extends State<AlarmHome> {
+  // Get Default ID From Alarm List
   int getDefaultId(List<AlarmItem>? alarmList) {
     List<AlarmItem>? tmp = alarmList;
     if (tmp != null && tmp.isNotEmpty) {
@@ -30,7 +31,7 @@ class _AlarmHomeState extends State<AlarmHome> {
   }
 
   // On Press Handler For Add Button
-  void addHandler(int id) {
+  void onAddPressHandler(int id) {
     Navigator.push(
         // Navigate To AlarmChange Page
         context,
@@ -154,7 +155,7 @@ class _AlarmHomeState extends State<AlarmHome> {
 
               // Add Button
               floatingActionButton: FloatingActionButton(
-                onPressed: () => addHandler(getDefaultId(alarmList)),
+                onPressed: () => onAddPressHandler(getDefaultId(alarmList)),
                 child: Icon(Icons.add),
                 backgroundColor: activeButtonColor,
               ),

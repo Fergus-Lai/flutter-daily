@@ -17,9 +17,12 @@ class CalendarHome extends StatefulWidget {
 }
 
 class _CalendarHomeState extends State<CalendarHome> {
+  // Creating Calendar Controller
   CalendarController calendarController = CalendarController();
+  // Default View Value
   CalendarView mode = CalendarView.schedule;
 
+  // Getting Default ID
   int getDefaultId(List<ScheduleItem>? alarmList) {
     List<ScheduleItem>? tmp = alarmList;
     if (tmp != null && tmp.isNotEmpty) {
@@ -30,6 +33,7 @@ class _CalendarHomeState extends State<CalendarHome> {
     }
   }
 
+  // Setting Calendar View Mode Icon
   IconData calendarIcon(CalendarView mode) {
     switch (mode) {
       case CalendarView.schedule:
@@ -39,7 +43,8 @@ class _CalendarHomeState extends State<CalendarHome> {
     }
   }
 
-  void modeHandler() {
+  // Handle Change Mode Button Press
+  void onModePressHandler() {
     setState(() {
       switch (mode) {
         case CalendarView.schedule:
@@ -53,7 +58,8 @@ class _CalendarHomeState extends State<CalendarHome> {
     calendarController.view = mode;
   }
 
-  void addHandler(int id) {
+  // Handle Add Button Press
+  void onAddPressHandler(int id) {
     Navigator.push(
         // Navigate To AlarmChange Page
         context,
@@ -64,7 +70,8 @@ class _CalendarHomeState extends State<CalendarHome> {
         ));
   }
 
-  void calendarTap(CalendarTapDetails calendarTapDetails) {
+  // Handle Calendar Press
+  void onCalendarPressHandler(CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.appointments!.length == 1) {
       Navigator.push(
         // Navigate To AlarmChange Page
@@ -78,11 +85,13 @@ class _CalendarHomeState extends State<CalendarHome> {
     }
   }
 
-  void onLongTap(CalendarLongPressDetails calendarTapDetails) {
+  // Handle Calendar Long Press
+  void onCalendarLongPressHandler(CalendarLongPressDetails calendarTapDetails) {
     if (calendarTapDetails.appointments!.length == 1) {
       showDialog(
           context: context,
           builder: (context) {
+            // Show Alert Dialog To Confirm Delete
             return AlertDialog(
               content: Text(
                 "Delete Appointment?",
@@ -128,10 +137,12 @@ class _CalendarHomeState extends State<CalendarHome> {
             backgroundColor: backgroundColor,
             body: Column(
               children: [
+                // Place Holder
                 Flexible(
                   flex: 1,
                   child: Container(),
                 ),
+                // Mode Change Button
                 Flexible(
                   flex: 1,
                   child: Container(
@@ -142,15 +153,16 @@ class _CalendarHomeState extends State<CalendarHome> {
                         calendarIcon(mode),
                         color: activeButtonColor,
                       ),
-                      onPressed: modeHandler,
+                      onPressed: onModePressHandler,
                     ),
                   ),
                 ),
+                // Calendar
                 Flexible(
                   flex: 12,
                   child: SfCalendar(
-                    onTap: calendarTap,
-                    onLongPress: onLongTap,
+                    onTap: onCalendarPressHandler,
+                    onLongPress: onCalendarLongPressHandler,
                     dataSource: ScheduleDataSource(scheduleList),
                     cellBorderColor: inactiveColor,
                     controller: calendarController,
@@ -192,7 +204,7 @@ class _CalendarHomeState extends State<CalendarHome> {
             ),
             // Add Button
             floatingActionButton: FloatingActionButton(
-              onPressed: () => addHandler(getDefaultId(scheduleList)),
+              onPressed: () => onAddPressHandler(getDefaultId(scheduleList)),
               child: Icon(Icons.add),
               backgroundColor: activeButtonColor,
             ),
